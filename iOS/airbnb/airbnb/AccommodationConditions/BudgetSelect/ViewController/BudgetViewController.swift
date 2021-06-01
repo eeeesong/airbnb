@@ -43,14 +43,9 @@ final class BudgetViewController: AccommodationConditionViewController {
         return stackView
     }()
     
-    private lazy var budgetSlider: UISlider = {
-        let slider = UISlider()
-        return slider
-    }()
-    
     private lazy var budgetGraphView: BudgetGraphView = {
         let view = BudgetGraphView()
-        view.translatesAutoresizingMaskIntoConstraints = false 
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
@@ -66,9 +61,9 @@ final class BudgetViewController: AccommodationConditionViewController {
     override func loadView() {
         super.loadView()
         addStackView()
-        addGraph()
+        addGraphView()
     }
-    
+
     private func addStackView() {
         view.addSubview(infoStackView)
         NSLayoutConstraint.activate([
@@ -79,7 +74,7 @@ final class BudgetViewController: AccommodationConditionViewController {
         ])
     }
     
-    private func addGraph() {
+    private func addGraphView() {
         view.addSubview(budgetGraphView)
         NSLayoutConstraint.activate([
             budgetGraphView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: viewInset),
@@ -97,12 +92,13 @@ final class BudgetViewController: AccommodationConditionViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         drawGraph()
+        budgetGraphView.configure()
     }
     
     private func drawGraph() {
         var randomNumbers = [Int]()
-        (0...100).forEach { _ in
-            randomNumbers.append(Int.random(in: 10...100))
+        (0...100).forEach { index in
+            randomNumbers.append(Int.random(in: 10000...1000000))
         }
         var mockBudget = [Budget]()
         randomNumbers.forEach { number in

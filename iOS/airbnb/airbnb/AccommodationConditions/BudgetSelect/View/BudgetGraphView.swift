@@ -18,29 +18,54 @@ extension Budget: Comparable {
 }
 
 final class BudgetGraphView: UIView {
+    
+    private lazy var budgetSlider: UISlider = {
+        let height = frame.height * 0.03
+        let origin = CGPoint(x: 0, y: graphStartAt.y - height / 2)
+        let size = CGSize(width: frame.width, height: height)
+        let frame = CGRect(origin: origin, size: size)
+        let slider = UISlider(frame: frame)
+        let pause = UIImage(systemName: "pause")
+        
+        slider.setThumbImage(pause, for: .normal)
+        slider.setMaximumTrackImage(pause, for: .normal)
+        slider.setMinimumTrackImage(pause, for: .normal)
+        slider.maximumTrackTintColor = .clear
+        slider.minimumTrackTintColor = .clear
+        return slider
+    }()
 
-    private lazy var centerYPoint: CGPoint = {
+    private lazy var graphStartAt: CGPoint = {
         let centerY = frame.height / 2
         return CGPoint(x: 0, y: centerY)
     }()
+    
+    func configure() {
+        addSubview(budgetSlider)
+        NSLayoutConstraint.activate([
+            budgetSlider.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            budgetSlider.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+            budgetSlider.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor)
+        ])
+    }
     
     func drawGraph(with budgets: [Budget]) {
     
         guard let maxCount = budgets.max()?.count else { return }
         
-        let Xspacing = frame.width / CGFloat(budgets.count + 2)
+        let Xspacing = frame.width / CGFloat(budgets.count + 6)
         let path = UIBezierPath()
-        path.move(to: centerYPoint)
-        
+        path.move(to: CGPoint(x: graphStartAt.x + Xspacing * 2, y: graphStartAt.y))
+
         budgets.enumerated().forEach { (idx, budget) in
-            let XPoint = Xspacing * CGFloat(idx + 1)
+            let XPoint = Xspacing * CGFloat(idx + 2)
             let YScale = CGFloat(budget.count) / CGFloat(maxCount)
             let YPoint = yCoordinate(for: YScale)
             let nextPoint = CGPoint(x: XPoint, y: YPoint)
             path.addLine(to: nextPoint)
         }
         
-        let lastPoint = CGPoint(x: frame.width, y: frame.height / 2)
+        let lastPoint = CGPoint(x: Xspacing * CGFloat(budgets.count + 4), y: frame.height / 2)
         let lastPoint2 = CGPoint(x: 0, y: frame.height / 2)
         path.addLine(to: lastPoint)
         path.addLine(to: lastPoint2)
@@ -55,7 +80,7 @@ final class BudgetGraphView: UIView {
     }
     
     private func yCoordinate(for scale: CGFloat) -> CGFloat {
-        let centerY = centerYPoint.y
+        let centerY = graphStartAt.y
         let point = centerY * scale
         return centerY - point
     }
