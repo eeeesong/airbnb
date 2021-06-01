@@ -54,6 +54,7 @@
 		E4E63C972664CEF700F86104 /* BudgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E63C962664CEF700F86104 /* BudgetViewController.swift */; };
 		E4E63CA4266611CF00F86104 /* AccommodationConditionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E63CA3266611CF00F86104 /* AccommodationConditionViewController.swift */; };
 		E4E63CA72666198600F86104 /* BudgetGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E63CA62666198600F86104 /* BudgetGraphView.swift */; };
+		E4E63CAA266656AE00F86104 /* MultiSlider in Frameworks */ = {isa = PBXBuildFile; productRef = E4E63CA9266656AE00F86104 /* MultiSlider */; };
 		E4F302A32655F71E002C9770 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E4F302A22655F71E002C9770 /* Alamofire */; };
 		E4F302A52655F837002C9770 /* AlamofireRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F302A42655F837002C9770 /* AlamofireRequestManager.swift */; };
 		E4F302A72655F84B002C9770 /* AlamofireNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F302A62655F84B002C9770 /* AlamofireNetworkManager.swift */; };
@@ -179,6 +180,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4F302A32655F71E002C9770 /* Alamofire in Frameworks */,
+				E4E63CAA266656AE00F86104 /* MultiSlider in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -539,6 +541,7 @@
 			name = airbnb;
 			packageProductDependencies = (
 				E4F302A22655F71E002C9770 /* Alamofire */,
+				E4E63CA9266656AE00F86104 /* MultiSlider */,
 			);
 			productName = airbnb;
 			productReference = E4DB1CEF26524A7700894DCB /* airbnb.app */;
@@ -573,6 +576,7 @@
 			mainGroup = E4DB1CE626524A7700894DCB;
 			packageReferences = (
 				E4F302A12655F71E002C9770 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				E4E63CA8266656AE00F86104 /* XCRemoteSwiftPackageReference "MultiSlider" */,
 			);
 			productRefGroup = E4DB1CF026524A7700894DCB /* Products */;
 			projectDirPath = "";
@@ -944,6 +948,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		E4E63CA8266656AE00F86104 /* XCRemoteSwiftPackageReference "MultiSlider" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/yonat/MultiSlider";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.11.2;
+			};
+		};
 		E4F302A12655F71E002C9770 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -955,6 +967,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		E4E63CA9266656AE00F86104 /* MultiSlider */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E4E63CA8266656AE00F86104 /* XCRemoteSwiftPackageReference "MultiSlider" */;
+			productName = MultiSlider;
+		};
 		E4F302A22655F71E002C9770 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E4F302A12655F71E002C9770 /* XCRemoteSwiftPackageReference "Alamofire" */;

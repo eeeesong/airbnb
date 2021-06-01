@@ -6,9 +6,11 @@
 //
 
 import UIKit
+import MultiSlider
 
 struct Budget {
     let count: Int
+    let price: Int
 }
 
 extension Budget: Comparable {
@@ -18,20 +20,18 @@ extension Budget: Comparable {
 }
 
 final class BudgetGraphView: UIView {
-    
-    private lazy var budgetSlider: UISlider = {
+
+    private lazy var budgetSlider: MultiSlider = {
         let height = frame.height * 0.03
         let origin = CGPoint(x: 0, y: graphStartAt.y - height / 2)
         let size = CGSize(width: frame.width, height: height)
         let frame = CGRect(origin: origin, size: size)
-        let slider = UISlider(frame: frame)
-        let pause = UIImage(systemName: "pause")
+        let slider = MultiSlider(frame: frame)
         
-        slider.setThumbImage(pause, for: .normal)
-        slider.setMaximumTrackImage(pause, for: .normal)
-        slider.setMinimumTrackImage(pause, for: .normal)
-        slider.maximumTrackTintColor = .clear
-        slider.minimumTrackTintColor = .clear
+        slider.orientation = .horizontal
+        slider.tintColor = .white
+        slider.showsThumbImageShadow = true
+        slider.keepsDistanceBetweenThumbs = true
         return slider
     }()
 
@@ -77,6 +77,16 @@ final class BudgetGraphView: UIView {
         
         self.layer.addSublayer(layer)
         
+        changeBudgetSlider(with: budgets)
+    }
+    
+    func changeBudgetSlider(with budgets: [Budget]) {
+        guard let min = budgets.first?.price, let max = budgets.last?.price else { return }
+        let count = budgets.count
+        budgetSlider.minimumValue = CGFloat(min)
+        budgetSlider.maximumValue = CGFloat(max)
+        budgetSlider.value = [CGFloat(min), CGFloat(max)]
+        budgetSlider.snapStepSize = CGFloat(max - min) / CGFloat(count)
     }
     
     private func yCoordinate(for scale: CGFloat) -> CGFloat {

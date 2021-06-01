@@ -97,12 +97,13 @@ final class BudgetViewController: AccommodationConditionViewController {
     
     private func drawGraph() {
         var randomNumbers = [Int]()
-        (0...100).forEach { index in
-            randomNumbers.append(Int.random(in: 10000...1000000))
+        (0...30).forEach { index in
+            randomNumbers.append(Int.random(in: 0...300))
         }
         var mockBudget = [Budget]()
-        randomNumbers.forEach { number in
-            mockBudget.append(Budget(count: number))
+        randomNumbers.enumerated().forEach { (index, number) in
+            mockBudget.append(Budget(count: number,
+                                     price: index * 10000))
         }
         budgetGraphView.drawGraph(with: mockBudget)
     }
