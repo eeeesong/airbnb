@@ -9,21 +9,29 @@ import UIKit
 
 final class CalendarViewController: UIViewController {
     
+    private lazy var passButton: UIBarButtonItem = {
+        return UIBarButtonItem(title: CalendarViewModel.ButtonTitle.pass,
+                               style: .plain,
+                               target: self,
+                               action: nil)
+    }()
+    
+    private lazy var nextButton: UIBarButtonItem = {
+        return UIBarButtonItem(title: CalendarViewModel.ButtonTitle.next,
+                               style: .plain,
+                               target: self,
+                               action: #selector(pushNextViewController))
+    }()
+    
     private lazy var toolBar: UIToolbar = {
         let tempFrame = CGRect(x: 0, y: 0, width: view.frame.width, height: 200)
         let toolBar = UIToolbar(frame: tempFrame)
         toolBar.tintColor = .systemPink
         toolBar.translatesAutoresizingMaskIntoConstraints = false
         
-        let passButton = UIBarButtonItem(title: CalendarViewModel.ButtonTitle.pass,
-                                         style: .plain,
-                                         target: self,
-                                         action: nil)
+        let passButton = self.passButton
         let spacing = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let nextButton = UIBarButtonItem(title: CalendarViewModel.ButtonTitle.next,
-                                         style: .plain,
-                                         target: self,
-                                         action: nil)
+        let nextButton = self.nextButton
         nextButton.isEnabled = false
         toolBar.setItems([passButton, spacing, nextButton], animated: true)
         return toolBar
@@ -198,10 +206,17 @@ final class CalendarViewController: UIViewController {
                                                target: self,
                                                action: #selector(selectionCanceled))
         navigationItem.setRightBarButton(cancelButtonItem, animated: false)
+        changeBarButtonStatus(isCalendarSelected: true)
     }
     
     private func unsetCancelBarButton() {
         navigationItem.setRightBarButton(nil, animated: false)
+        changeBarButtonStatus(isCalendarSelected: false)
+    }
+    
+    private func changeBarButtonStatus(isCalendarSelected selectionStatus: Bool) {
+        nextButton.isEnabled = selectionStatus
+        passButton.isEnabled = !selectionStatus
     }
     
     @objc private func selectionCanceled(_ sender: UIBarButtonItem) {
@@ -209,6 +224,13 @@ final class CalendarViewController: UIViewController {
         unsetCancelBarButton()
     }
 
+    @objc func pushNextViewController(_ sender: UIBarButtonItem) {
+        let tempLocation = Location(name: "임시", coordinate: Coordinate(latitude: 0, longitude: 0))
+        let tempConditionManager = ConditionManager(location: tempLocation)
+        let budgetViewController = BudgetViewController.create(conditionManager: tempConditionManager)
+        self.navigationController?.pushViewController(budgetViewController, animated: true)
+    }
+    
 }
 
 extension CalendarViewController: UICollectionViewDelegateFlowLayout {
