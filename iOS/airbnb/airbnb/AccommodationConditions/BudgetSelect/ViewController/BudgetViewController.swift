@@ -87,6 +87,7 @@ final class BudgetViewController: AccommodationConditionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         accommodationConditionTableView.dataSource = accommodationConditionTableViewDataSource
+        budgetGraphView.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -97,13 +98,13 @@ final class BudgetViewController: AccommodationConditionViewController {
     
     private func drawGraph() {
         var randomNumbers = [Int]()
-        (0...30).forEach { index in
+        (0...100).forEach { index in
             randomNumbers.append(Int.random(in: 0...300))
         }
         var mockBudget = [Budget]()
         randomNumbers.enumerated().forEach { (index, number) in
             mockBudget.append(Budget(count: number,
-                                     price: index * 10000))
+                                     price: (index+1) * 10000))
         }
         budgetGraphView.drawGraph(with: mockBudget)
     }
@@ -116,4 +117,10 @@ final class BudgetViewController: AccommodationConditionViewController {
         
     }
 
+}
+
+extension BudgetViewController: BudgetSliderDelegate {
+    func didDragEnded(with values: [Int]) {
+        budgetGraphView.fillOffsets(values: values)
+    }
 }

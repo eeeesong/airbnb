@@ -19,6 +19,10 @@ extension Budget: Comparable {
     }
 }
 
+protocol BudgetSliderDelegate: AnyObject {
+    func didDragEnded(with values: [Int])
+}
+
 final class BudgetGraphView: UIView {
 
     private lazy var budgetSlider: MultiSlider = {
@@ -29,9 +33,12 @@ final class BudgetGraphView: UIView {
         let slider = MultiSlider(frame: frame)
         
         slider.orientation = .horizontal
+        slider.isContinuous = false
         slider.tintColor = .white
         slider.showsThumbImageShadow = true
         slider.keepsDistanceBetweenThumbs = true
+        slider.addTarget(self, action: #selector(sliderDragEnded), for: .touchDragEnter)
+        slider.addTarget(self, action: #selector(sliderDragEnded), for: .valueChanged)
         return slider
     }()
 
@@ -40,7 +47,40 @@ final class BudgetGraphView: UIView {
         return CGPoint(x: 0, y: centerY)
     }()
     
+    private lazy var blendLayer: CALayer = {
+        let layer = CALayer()
+        layer.backgroundColor = UIColor.white.cgColor
+        layer.compositingFilter = "differenceBlendMode"
+        return layer
+    }()
+    
+    private lazy var blendLayer2: CALayer = {
+        let layer = CALayer()
+        layer.backgroundColor = UIColor.white.cgColor
+        layer.compositingFilter = "differenceBlendMode"
+        return layer
+    }()
+    
+    private var currentBudgets: [Budget]?
+    weak var delegate: BudgetSliderDelegate?
+    
+    func fillOffsets(values: [Int]) {
+        guard let totalCount = currentBudgets?.count else { return }
+        let unit = frame.width / CGFloat(totalCount)
+        
+        let firstWidth = CGFloat(values[0]-1) * unit
+        let firstFrame = CGRect(x: 0, y: 0, width: firstWidth, height: frame.height / 2)
+        blendLayer.frame = firstFrame
+        
+        let secondWidth = CGFloat(totalCount - values[1]) * unit
+        let secondX = CGFloat(values[1]) * unit
+        let secondFrame = CGRect(x: secondX, y: 0, width: secondWidth, height: frame.height / 2)
+        blendLayer2.frame = secondFrame
+    }
+    
     func configure() {
+        layer.addSublayer(blendLayer)
+        layer.addSublayer(blendLayer2)
         addSubview(budgetSlider)
         NSLayoutConstraint.activate([
             budgetSlider.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
@@ -49,23 +89,37 @@ final class BudgetGraphView: UIView {
         ])
     }
     
+    private func counter(sliderValue: CGFloat) -> Int? {
+        guard let budgets = currentBudgets,
+              let min = budgets.first?.price,
+              let max = budgets.last?.price else { return nil }
+        let unit = CGFloat(max - min) / CGFloat(budgets.count)
+        return Int(sliderValue / unit)
+    }
+    
+    @objc private func sliderDragEnded(_ sender: MultiSlider) {
+        let newValues = sender.value.map{ counter(sliderValue: $0) }.compactMap{ $0 }
+        delegate?.didDragEnded(with: newValues)
+    }
+    
     func drawGraph(with budgets: [Budget]) {
     
         guard let maxCount = budgets.max()?.count else { return }
         
-        let Xspacing = frame.width / CGFloat(budgets.count + 6)
+        currentBudgets = budgets
+        let Xspacing = frame.width / CGFloat(budgets.count)
         let path = UIBezierPath()
-        path.move(to: CGPoint(x: graphStartAt.x + Xspacing * 2, y: graphStartAt.y))
+        path.move(to: graphStartAt)
 
         budgets.enumerated().forEach { (idx, budget) in
-            let XPoint = Xspacing * CGFloat(idx + 2)
+            let XPoint = Xspacing * CGFloat(idx)
             let YScale = CGFloat(budget.count) / CGFloat(maxCount)
             let YPoint = yCoordinate(for: YScale)
             let nextPoint = CGPoint(x: XPoint, y: YPoint)
             path.addLine(to: nextPoint)
         }
         
-        let lastPoint = CGPoint(x: Xspacing * CGFloat(budgets.count + 4), y: frame.height / 2)
+        let lastPoint = CGPoint(x: Xspacing * CGFloat(budgets.count), y: frame.height / 2)
         let lastPoint2 = CGPoint(x: 0, y: frame.height / 2)
         path.addLine(to: lastPoint)
         path.addLine(to: lastPoint2)
