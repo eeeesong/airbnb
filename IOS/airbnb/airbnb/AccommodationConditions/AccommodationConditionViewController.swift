@@ -53,15 +53,22 @@ class AccommodationConditionViewController: UIViewController {
         return tableView
     }()
     
-    private lazy var tableCellHeight: CGFloat = {
+    private(set) lazy var tableCellHeight: CGFloat = {
         let viewHeight = view.frame.height
         return viewHeight * 0.05
+    }()
+    
+    private(set) lazy var viewInset: CGFloat = {
+        let viewWidth = view.frame.width
+        return viewWidth * 0.07
     }()
     
     override func loadView() {
         super.loadView()
         addToolBar()
         addTableView()
+        view.backgroundColor = .white
+        edgesForExtendedLayout = .all
     }
 
     private func addToolBar() {

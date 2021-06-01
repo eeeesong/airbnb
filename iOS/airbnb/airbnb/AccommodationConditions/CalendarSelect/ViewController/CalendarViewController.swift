@@ -45,11 +45,6 @@ final class CalendarViewController: AccommodationConditionViewController {
         return stackView
     }()
     
-    private lazy var calendarInset: CGFloat = {
-        let viewWidth = view.frame.width
-        return viewWidth * 0.07
-    }()
-    
     override func loadView() {
         super.loadView()
         addStackView()
@@ -59,9 +54,9 @@ final class CalendarViewController: AccommodationConditionViewController {
     private func addStackView() {
         view.addSubview(weekdayStackView)
         NSLayoutConstraint.activate([
-            weekdayStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: calendarInset),
-            weekdayStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -calendarInset),
-            weekdayStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: calendarInset),
+            weekdayStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: viewInset),
+            weekdayStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -viewInset),
+            weekdayStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: viewInset),
             weekdayStackView.heightAnchor.constraint(equalToConstant: accommodationConditionTableView.rowHeight)
         ])
     }
@@ -69,8 +64,8 @@ final class CalendarViewController: AccommodationConditionViewController {
     private func addCollectionView() {
         view.addSubview(calendarCollectionView)
         NSLayoutConstraint.activate([
-            calendarCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: calendarInset),
-            calendarCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -calendarInset),
+            calendarCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: viewInset),
+            calendarCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -viewInset),
             calendarCollectionView.bottomAnchor.constraint(equalTo: accommodationConditionTableView.topAnchor),
             calendarCollectionView.topAnchor.constraint(equalTo: weekdayStackView.bottomAnchor)
         ])
@@ -154,13 +149,13 @@ extension CalendarViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: calendarInset, left: 0, bottom: calendarInset, right: 0)
+        return UIEdgeInsets(top: viewInset, left: 0, bottom: viewInset, right: 0)
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: calendarInset * 2.5)
+        return CGSize(width: collectionView.frame.width, height: viewInset * 2.5)
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
