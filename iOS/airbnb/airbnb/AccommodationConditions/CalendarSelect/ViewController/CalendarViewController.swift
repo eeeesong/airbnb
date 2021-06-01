@@ -7,49 +7,7 @@
 
 import UIKit
 
-final class CalendarViewController: UIViewController {
-    
-    private lazy var passButton: UIBarButtonItem = {
-        return UIBarButtonItem(title: CalendarViewModel.ButtonTitle.pass,
-                               style: .plain,
-                               target: self,
-                               action: nil)
-    }()
-    
-    private lazy var nextButton: UIBarButtonItem = {
-        return UIBarButtonItem(title: CalendarViewModel.ButtonTitle.next,
-                               style: .plain,
-                               target: self,
-                               action: #selector(pushNextViewController))
-    }()
-    
-    private lazy var toolBar: UIToolbar = {
-        let tempFrame = CGRect(x: 0, y: 0, width: view.frame.width, height: 200)
-        let toolBar = UIToolbar(frame: tempFrame)
-        toolBar.tintColor = .systemPink
-        toolBar.translatesAutoresizingMaskIntoConstraints = false
-        
-        let passButton = self.passButton
-        let spacing = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let nextButton = self.nextButton
-        nextButton.isEnabled = false
-        toolBar.setItems([passButton, spacing, nextButton], animated: true)
-        return toolBar
-    }()
-    
-    private lazy var accommodationConditionTableView: UITableView = {
-        let tableView = UITableView()
-        tableView.layer.borderWidth = 0.5
-        tableView.layer.borderColor = UIColor.lightGray.cgColor
-        tableView.isScrollEnabled = false
-        tableView.allowsSelection = false
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        
-        let cellId = AccommodationConditionTableViewCell.reuseIdentifier
-        tableView.register(AccommodationConditionTableViewCell.self, forCellReuseIdentifier: cellId)
-        
-        return tableView
-    }()
+final class CalendarViewController: AccommodationConditionViewController {
     
     private lazy var calendarCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -92,43 +50,12 @@ final class CalendarViewController: UIViewController {
         return viewWidth * 0.07
     }()
     
-    private lazy var tableCellHeight: CGFloat = {
-        let viewHeight = view.frame.height
-        return viewHeight * 0.05
-    }()
-    
     override func loadView() {
         super.loadView()
-        configure()
-    }
-    
-    private func configure() {
-        addToolBar()
-        addTableView()
         addStackView()
         addCollectionView()
     }
-    
-    private func addToolBar() {
-        view.addSubview(toolBar)
-        NSLayoutConstraint.activate([
-            toolBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            toolBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            toolBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
-        ])
-    }
-    
-    private func addTableView() {
-        view.addSubview(accommodationConditionTableView)
-        accommodationConditionTableView.rowHeight = tableCellHeight
-        NSLayoutConstraint.activate([
-            accommodationConditionTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            accommodationConditionTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            accommodationConditionTableView.bottomAnchor.constraint(equalTo: toolBar.topAnchor),
-            accommodationConditionTableView.heightAnchor.constraint(equalToConstant: tableCellHeight * 4)
-        ])
-    }
-    
+
     private func addStackView() {
         view.addSubview(weekdayStackView)
         NSLayoutConstraint.activate([
@@ -198,36 +125,17 @@ final class CalendarViewController: UIViewController {
         }
     }
     
-    private func setCancelBarButton() {
-        guard navigationItem.rightBarButtonItem == nil else { return }
-        let buttonTitle = CalendarViewModel.ButtonTitle.cancel
-        let cancelButtonItem = UIBarButtonItem(title: buttonTitle,
-                                               style: .done,
-                                               target: self,
-                                               action: #selector(selectionCanceled))
-        navigationItem.setRightBarButton(cancelButtonItem, animated: false)
-        changeBarButtonStatus(isCalendarSelected: true)
-    }
-    
-    private func unsetCancelBarButton() {
-        navigationItem.setRightBarButton(nil, animated: false)
-        changeBarButtonStatus(isCalendarSelected: false)
-    }
-    
-    private func changeBarButtonStatus(isCalendarSelected selectionStatus: Bool) {
-        nextButton.isEnabled = selectionStatus
-        passButton.isEnabled = !selectionStatus
-    }
-    
-    @objc private func selectionCanceled(_ sender: UIBarButtonItem) {
+    @objc override func selectionCanceled(_ sender: UIBarButtonItem) {
+        super.selectionCanceled(sender)
         viewModel?.didSelectionCanceled()
-        unsetCancelBarButton()
     }
 
-    @objc func pushNextViewController(_ sender: UIBarButtonItem) {
+    @objc override func pushNextViewController(_ sender: UIBarButtonItem) {
+        super.pushNextViewController(sender)
         let tempLocation = Location(name: "임시", coordinate: Coordinate(latitude: 0, longitude: 0))
         let tempConditionManager = ConditionManager(location: tempLocation)
         let budgetViewController = BudgetViewController.create(conditionManager: tempConditionManager)
+        budgetViewController.accommodationConditionTableViewDataSource = accommodationConditionTableViewDataSource
         self.navigationController?.pushViewController(budgetViewController, animated: true)
     }
     
