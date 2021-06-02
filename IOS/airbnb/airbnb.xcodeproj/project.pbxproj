@@ -59,6 +59,8 @@
 		E4E63CB12667260A00F86104 /* BudgetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E63CB02667260A00F86104 /* BudgetViewModel.swift */; };
 		E4E63CB32667509300F86104 /* BudgetManageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E63CB22667509300F86104 /* BudgetManageModel.swift */; };
 		E4E63CB52667557D00F86104 /* BudgetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E63CB42667557D00F86104 /* BudgetManager.swift */; };
+		E4E63CC326676AFF00F86104 /* AccommodationListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E63CC226676AFF00F86104 /* AccommodationListViewController.swift */; };
+		E4E63CC52667705D00F86104 /* AccommodationCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E63CC42667705D00F86104 /* AccommodationCollectionViewCell.swift */; };
 		E4F302A32655F71E002C9770 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E4F302A22655F71E002C9770 /* Alamofire */; };
 		E4F302A52655F837002C9770 /* AlamofireRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F302A42655F837002C9770 /* AlamofireRequestManager.swift */; };
 		E4F302A72655F84B002C9770 /* AlamofireNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F302A62655F84B002C9770 /* AlamofireNetworkManager.swift */; };
@@ -149,6 +151,8 @@
 		E4E63CB02667260A00F86104 /* BudgetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetViewModel.swift; sourceTree = "<group>"; };
 		E4E63CB22667509300F86104 /* BudgetManageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetManageModel.swift; sourceTree = "<group>"; };
 		E4E63CB42667557D00F86104 /* BudgetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetManager.swift; sourceTree = "<group>"; };
+		E4E63CC226676AFF00F86104 /* AccommodationListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccommodationListViewController.swift; sourceTree = "<group>"; };
+		E4E63CC42667705D00F86104 /* AccommodationCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccommodationCollectionViewCell.swift; sourceTree = "<group>"; };
 		E4F302A42655F837002C9770 /* AlamofireRequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireRequestManager.swift; sourceTree = "<group>"; };
 		E4F302A62655F84B002C9770 /* AlamofireNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireNetworkManager.swift; sourceTree = "<group>"; };
 		E4F302A82655F890002C9770 /* AlamofireImageLoadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireImageLoadManager.swift; sourceTree = "<group>"; };
@@ -449,8 +453,8 @@
 		E4E63CBE26676A7200F86104 /* AccommodationList */ = {
 			isa = PBXGroup;
 			children = (
-				E4E63CBF26676A8D00F86104 /* ViewController */,
 				E4E63CC026676A9300F86104 /* ViewModel */,
+				E4E63CBF26676A8D00F86104 /* ViewController */,
 				E4E63CC126676A9700F86104 /* View */,
 			);
 			path = AccommodationList;
@@ -459,6 +463,7 @@
 		E4E63CBF26676A8D00F86104 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				E4E63CC226676AFF00F86104 /* AccommodationListViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -473,6 +478,7 @@
 		E4E63CC126676A9700F86104 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				E4E63CC42667705D00F86104 /* AccommodationCollectionViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -694,6 +700,7 @@
 				E4E63C68265F314600F86104 /* AccommodationConditionTableViewDataSource.swift in Sources */,
 				E4DB1D7E2653916900894DCB /* PopularLocationTableViewCell.swift in Sources */,
 				E4E63C7A265FBC0100F86104 /* Period.swift in Sources */,
+				E4E63CC326676AFF00F86104 /* AccommodationListViewController.swift in Sources */,
 				E4E63CB32667509300F86104 /* BudgetManageModel.swift in Sources */,
 				E4E63C64265F300400F86104 /* CalendarViewModel.swift in Sources */,
 				E4DB1D7C2653912F00894DCB /* PopularLocationViewController.swift in Sources */,
@@ -725,6 +732,7 @@
 				E42671A6265BD357009323B8 /* SearchBarFactory.swift in Sources */,
 				E4E63C59265E71E300F86104 /* CalendarCollectionViewCell.swift in Sources */,
 				E4E63C8C266366D900F86104 /* AnySearchConditionHandleModel.swift in Sources */,
+				E4E63CC52667705D00F86104 /* AccommodationCollectionViewCell.swift in Sources */,
 				E4F302CD26564FCE002C9770 /* ViewControllerFactory.swift in Sources */,
 				E4E63C7C265FBC3600F86104 /* Charge.swift in Sources */,
 				E4E63C7F265FC06600F86104 /* CalendarManager.swift in Sources */,
