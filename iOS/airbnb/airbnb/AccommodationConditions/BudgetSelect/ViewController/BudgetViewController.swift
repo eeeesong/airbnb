@@ -127,7 +127,11 @@ final class BudgetViewController: AccommodationConditionViewController {
     }
     
     @objc override func pushNextViewController(_ sender: UIBarButtonItem) {
-        
+        super.pushNextViewController(sender)
+        let tempLocation = Location(name: "임시", coordinate: Coordinate(latitude: 0, longitude: 0))
+        let tempConditionManager = ConditionManager(location: tempLocation)
+        let accommodationViewController = AccommodationListViewController.create(conditionManager: tempConditionManager)
+        self.navigationController?.pushViewController(accommodationViewController, animated: true)
     }
 
 }
@@ -138,3 +142,13 @@ extension BudgetViewController: BudgetSliderDelegate {
         viewModel?.didNewBudgetSelected(values: values)
     }
 }
+
+/*
+ super.pushNextViewController(sender)
+ let tempLocation = Location(name: "임시", coordinate: Coordinate(latitude: 0, longitude: 0))
+ let tempConditionManager = ConditionManager(location: tempLocation)
+ let viewModel = BudgetViewModel(conditionManager: tempConditionManager)
+ let budgetViewController = BudgetViewController.create(viewModel: viewModel)
+ budgetViewController.accommodationConditionTableViewDataSource = accommodationConditionTableViewDataSource
+ self.navigationController?.pushViewController(budgetViewController, animated: true)
+ */

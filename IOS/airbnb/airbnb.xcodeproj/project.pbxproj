@@ -61,6 +61,7 @@
 		E4E63CB52667557D00F86104 /* BudgetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E63CB42667557D00F86104 /* BudgetManager.swift */; };
 		E4E63CC326676AFF00F86104 /* AccommodationListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E63CC226676AFF00F86104 /* AccommodationListViewController.swift */; };
 		E4E63CC52667705D00F86104 /* AccommodationCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E63CC42667705D00F86104 /* AccommodationCollectionViewCell.swift */; };
+		E4E63CC72667B54000F86104 /* AccommodationCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E63CC62667B54000F86104 /* AccommodationCollectionViewDataSource.swift */; };
 		E4F302A32655F71E002C9770 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E4F302A22655F71E002C9770 /* Alamofire */; };
 		E4F302A52655F837002C9770 /* AlamofireRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F302A42655F837002C9770 /* AlamofireRequestManager.swift */; };
 		E4F302A72655F84B002C9770 /* AlamofireNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F302A62655F84B002C9770 /* AlamofireNetworkManager.swift */; };
@@ -153,6 +154,7 @@
 		E4E63CB42667557D00F86104 /* BudgetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetManager.swift; sourceTree = "<group>"; };
 		E4E63CC226676AFF00F86104 /* AccommodationListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccommodationListViewController.swift; sourceTree = "<group>"; };
 		E4E63CC42667705D00F86104 /* AccommodationCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccommodationCollectionViewCell.swift; sourceTree = "<group>"; };
+		E4E63CC62667B54000F86104 /* AccommodationCollectionViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccommodationCollectionViewDataSource.swift; sourceTree = "<group>"; };
 		E4F302A42655F837002C9770 /* AlamofireRequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireRequestManager.swift; sourceTree = "<group>"; };
 		E4F302A62655F84B002C9770 /* AlamofireNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireNetworkManager.swift; sourceTree = "<group>"; };
 		E4F302A82655F890002C9770 /* AlamofireImageLoadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireImageLoadManager.swift; sourceTree = "<group>"; };
@@ -464,6 +466,7 @@
 			isa = PBXGroup;
 			children = (
 				E4E63CC226676AFF00F86104 /* AccommodationListViewController.swift */,
+				E4E63CC62667B54000F86104 /* AccommodationCollectionViewDataSource.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -715,6 +718,7 @@
 				E4E63C78265FAB5900F86104 /* DateFormatter.swift in Sources */,
 				E4F302F42656B257002C9770 /* ImageLoadManagable.swift in Sources */,
 				E4F302FA2656B3EE002C9770 /* HeroImageUseCase.swift in Sources */,
+				E4E63CC72667B54000F86104 /* AccommodationCollectionViewDataSource.swift in Sources */,
 				E4F302A52655F837002C9770 /* AlamofireRequestManager.swift in Sources */,
 				E4E63C76265FAA2000F86104 /* ConditionManager.swift in Sources */,
 				E4E63C932664B16300F86104 /* CalendarCoordinate.swift in Sources */,

@@ -20,6 +20,7 @@ final class AccommodationListViewController: UIViewController {
         stackView.distribution = .fillProportionally
         stackView.translatesAutoresizingMaskIntoConstraints = false
         [locationLabel, periodLabel, budgetLabel, headcountLabel].forEach { label in
+            label.font = .systemFont(ofSize: 15, weight: .light)
             label.textColor = .darkGray
             stackView.addArrangedSubview(label)
         }
@@ -28,10 +29,12 @@ final class AccommodationListViewController: UIViewController {
     
     private lazy var accommodationCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = viewInset * 1.5
+        layout.minimumLineSpacing = viewInset
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         let cellId = AccommodationCollectionViewCell.reuseIdentifier
         collectionView.register(AccommodationCollectionViewCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = .white
         return collectionView
     }()
     
@@ -41,6 +44,7 @@ final class AccommodationListViewController: UIViewController {
     }()
     
     private var conditionManager: ConditionManager?
+    private var accommodationCollectionViewDataSource: AccommodationCollectionViewDataSource?
     
     static func create(conditionManager: ConditionManager) -> AccommodationListViewController {
         let accommodationListViewController = AccommodationListViewController()
@@ -79,6 +83,9 @@ final class AccommodationListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         updateLabels()
+        accommodationCollectionViewDataSource = AccommodationCollectionViewDataSource()
+        accommodationCollectionView.dataSource = accommodationCollectionViewDataSource
+        accommodationCollectionView.delegate = self
     }
     
     private func updateLabels() {
@@ -90,4 +97,14 @@ final class AccommodationListViewController: UIViewController {
         }
     }
     
+}
+
+extension AccommodationListViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let cellWidth = collectionView.bounds.width
+        let cellHeight = cellWidth * 1.15
+        return CGSize(width: cellWidth, height: cellHeight)
+    }
 }
