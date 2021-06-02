@@ -43,6 +43,9 @@ final class BudgetViewController: AccommodationConditionViewController {
     }()
     
     private lazy var budgetGraphView: BudgetGraphView = {
+        let tempFrame = CGRect(x: 0, y: 0,
+                               width: view.frame.width - viewInset * 2,
+                               height: view.frame.height - tableCellHeight * 4)
         let view = BudgetGraphView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -88,11 +91,6 @@ final class BudgetViewController: AccommodationConditionViewController {
         accommodationConditionTableView.dataSource = accommodationConditionTableViewDataSource
         budgetGraphView.delegate = self
         bind()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        budgetGraphView.configure()
     }
     
     private func bind() {
@@ -142,13 +140,3 @@ extension BudgetViewController: BudgetSliderDelegate {
         viewModel?.didNewBudgetSelected(values: values)
     }
 }
-
-/*
- super.pushNextViewController(sender)
- let tempLocation = Location(name: "임시", coordinate: Coordinate(latitude: 0, longitude: 0))
- let tempConditionManager = ConditionManager(location: tempLocation)
- let viewModel = BudgetViewModel(conditionManager: tempConditionManager)
- let budgetViewController = BudgetViewController.create(viewModel: viewModel)
- budgetViewController.accommodationConditionTableViewDataSource = accommodationConditionTableViewDataSource
- self.navigationController?.pushViewController(budgetViewController, animated: true)
- */

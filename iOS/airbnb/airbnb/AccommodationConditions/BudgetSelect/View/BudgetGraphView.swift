@@ -16,7 +16,7 @@ final class BudgetGraphView: UIView {
 
     private lazy var budgetSlider: MultiSlider = {
         let height = frame.height * 0.03
-        let origin = CGPoint(x: 0, y: graphStartAt.y - height / 2)
+        let origin = CGPoint(x: 0, y: frame.height / 2 - height / 2)
         let size = CGSize(width: frame.width, height: height)
         let frame = CGRect(origin: origin, size: size)
         let slider = MultiSlider(frame: frame)
@@ -26,48 +26,56 @@ final class BudgetGraphView: UIView {
         slider.tintColor = .white
         slider.showsThumbImageShadow = true
         slider.keepsDistanceBetweenThumbs = true
+        slider.translatesAutoresizingMaskIntoConstraints = false
         slider.addTarget(self, action: #selector(sliderDragEnded), for: .valueChanged)
         return slider
     }()
 
-    private lazy var graphStartAt: CGPoint = {
-        let centerY = frame.height / 2
-        return CGPoint(x: 0, y: centerY)
+    private lazy var firstBlendLayer: CALayer = {
+        let layer = CALayer()
+        layer.backgroundColor = UIColor.white.cgColor
+        layer.compositingFilter = "differenceBlendMode"
+        return layer
     }()
     
-    private var firstBlendLayer: CALayer?
-    private var secondBlendLayer: CALayer?
+    private lazy var secondBlendLayer: CALayer = {
+        let layer = CALayer()
+        layer.backgroundColor = UIColor.white.cgColor
+        layer.compositingFilter = "differenceBlendMode"
+        return layer
+    }()
+    
     private var currentBudgets: [Budget]?
     private let dummyCount = 10
     private var maximumValue: CGFloat?
     weak var delegate: BudgetSliderDelegate?
     
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        configure()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        configure()
+    }
+
+    private func createBlendLayer() -> CALayer {
+        let layer = CALayer()
+        layer.backgroundColor = UIColor.white.cgColor
+        layer.compositingFilter = "differenceBlendMode"
+        return layer
+    }
+    
     func configure() {
-        configureBlendLayers()
+        layer.addSublayer(firstBlendLayer)
+        layer.addSublayer(secondBlendLayer)
         addSubview(budgetSlider)
         NSLayoutConstraint.activate([
             budgetSlider.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
             budgetSlider.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
             budgetSlider.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor)
         ])
-    }
-    
-    private func configureBlendLayers() {
-        firstBlendLayer = createBlendLayer()
-        secondBlendLayer = createBlendLayer()
-        
-        guard let firstBlendLayer = firstBlendLayer,
-              let secondBlendLayer = secondBlendLayer else { return }
-        
-        layer.addSublayer(firstBlendLayer)
-        layer.addSublayer(secondBlendLayer)
-    }
-    
-    private func createBlendLayer() -> CALayer {
-        let layer = CALayer()
-        layer.backgroundColor = UIColor.white.cgColor
-        layer.compositingFilter = "differenceBlendMode"
-        return layer
     }
     
     func drawGraph(with budgets: [Budget]) {
@@ -78,7 +86,7 @@ final class BudgetGraphView: UIView {
         currentBudgets = budgets
         let Xspacing = frame.width / CGFloat(budgets.count)
         let path = UIBezierPath()
-        path.move(to: graphStartAt)
+        path.move(to: CGPoint(x: 0, y: frame.height / 2))
 
         budgets.enumerated().forEach { (idx, budget) in
             let XPoint = Xspacing * CGFloat(idx)
@@ -98,8 +106,7 @@ final class BudgetGraphView: UIView {
         layer.path = path.cgPath
         layer.fillColor = UIColor.darkGray.cgColor
         
-        self.layer.addSublayer(layer)
-        
+        self.layer.insertSublayer(layer, at: 0)
         changeBudgetSlider(with: budgets)
     }
     
@@ -113,7 +120,7 @@ final class BudgetGraphView: UIView {
     }
     
     private func yCoordinate(for scale: CGFloat) -> CGFloat {
-        let centerY = graphStartAt.y
+        let centerY = frame.height / 2
         let point = centerY * scale
         return centerY - point
     }
@@ -128,9 +135,7 @@ final class BudgetGraphView: UIView {
     }
     
     func fillOffsets(values: [Int]) {
-        guard let totalCount = currentBudgets?.count,
-              let firstBlendLayer = firstBlendLayer,
-              let secondBlendLayer = secondBlendLayer else { return }
+        guard let totalCount = currentBudgets?.count else { return }
         
         let movedValues = values.map{ $0 + dummyCount }
         let unit = frame.width / CGFloat(totalCount)
