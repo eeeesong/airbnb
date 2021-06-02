@@ -9,13 +9,6 @@ import UIKit
 
 final class BudgetViewController: AccommodationConditionViewController {
     
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 17, weight: .bold)
-        label.text = "가격 범위"
-        return label
-    }()
-    
     private lazy var rangeLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16, weight: .medium)
@@ -37,6 +30,12 @@ final class BudgetViewController: AccommodationConditionViewController {
         stackView.axis = .vertical
         stackView.distribution = .fillProportionally
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        let titleLabel: UILabel = {
+            let label = UILabel()
+            label.font = .systemFont(ofSize: 17, weight: .bold)
+            label.text = "가격 범위"
+            return label
+        }()
         [titleLabel, rangeLabel, averageLabel].forEach { label in
             stackView.addArrangedSubview(label)
         }

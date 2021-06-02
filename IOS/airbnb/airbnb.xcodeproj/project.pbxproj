@@ -55,6 +55,7 @@
 		E4E63CA4266611CF00F86104 /* AccommodationConditionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E63CA3266611CF00F86104 /* AccommodationConditionViewController.swift */; };
 		E4E63CA72666198600F86104 /* BudgetGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E63CA62666198600F86104 /* BudgetGraphView.swift */; };
 		E4E63CAA266656AE00F86104 /* MultiSlider in Frameworks */ = {isa = PBXBuildFile; productRef = E4E63CA9266656AE00F86104 /* MultiSlider */; };
+		E4E63CAD2667220400F86104 /* Budget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E63CAC2667220400F86104 /* Budget.swift */; };
 		E4F302A32655F71E002C9770 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E4F302A22655F71E002C9770 /* Alamofire */; };
 		E4F302A52655F837002C9770 /* AlamofireRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F302A42655F837002C9770 /* AlamofireRequestManager.swift */; };
 		E4F302A72655F84B002C9770 /* AlamofireNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F302A62655F84B002C9770 /* AlamofireNetworkManager.swift */; };
@@ -141,6 +142,7 @@
 		E4E63C962664CEF700F86104 /* BudgetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetViewController.swift; sourceTree = "<group>"; };
 		E4E63CA3266611CF00F86104 /* AccommodationConditionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccommodationConditionViewController.swift; sourceTree = "<group>"; };
 		E4E63CA62666198600F86104 /* BudgetGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetGraphView.swift; sourceTree = "<group>"; };
+		E4E63CAC2667220400F86104 /* Budget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Budget.swift; sourceTree = "<group>"; };
 		E4F302A42655F837002C9770 /* AlamofireRequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireRequestManager.swift; sourceTree = "<group>"; };
 		E4F302A62655F84B002C9770 /* AlamofireNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireNetworkManager.swift; sourceTree = "<group>"; };
 		E4F302A82655F890002C9770 /* AlamofireImageLoadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireImageLoadManager.swift; sourceTree = "<group>"; };
@@ -387,6 +389,7 @@
 		E4E63C942664CE1B00F86104 /* BudgetSelect */ = {
 			isa = PBXGroup;
 			children = (
+				E4E63CAB266721F800F86104 /* Model */,
 				E4E63C982664D38400F86104 /* ViewModel */,
 				E4E63C952664CEE200F86104 /* ViewController */,
 				E4E63CA52666197200F86104 /* View */,
@@ -415,6 +418,14 @@
 				E4E63CA62666198600F86104 /* BudgetGraphView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		E4E63CAB266721F800F86104 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E4E63CAC2667220400F86104 /* Budget.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		E4F302AE26560107002C9770 /* View */ = {
@@ -681,6 +692,7 @@
 				E4F302AB2655F970002C9770 /* AlamofireRequestManagable.swift in Sources */,
 				E481481026549C980069BE20 /* SearchResultTableViewCell.swift in Sources */,
 				E4F303042656B9DB002C9770 /* HomeViewModel.swift in Sources */,
+				E4E63CAD2667220400F86104 /* Budget.swift in Sources */,
 				E4E63C81265FE56200F86104 /* SelectStatus.swift in Sources */,
 				E42671A8265BEABE009323B8 /* SearchResultTableViewDataSource.swift in Sources */,
 				E4F302EA265683F5002C9770 /* NetworkError.swift in Sources */,

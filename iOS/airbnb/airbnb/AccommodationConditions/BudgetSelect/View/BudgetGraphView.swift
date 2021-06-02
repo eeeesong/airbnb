@@ -8,17 +8,6 @@
 import UIKit
 import MultiSlider
 
-struct Budget {
-    let count: Int
-    let price: Int
-}
-
-extension Budget: Comparable {
-    static func < (lhs: Budget, rhs: Budget) -> Bool {
-        return lhs.count < rhs.count
-    }
-}
-
 protocol BudgetSliderDelegate: AnyObject {
     func didDragEnded(with values: [Int])
 }
@@ -46,26 +35,13 @@ final class BudgetGraphView: UIView {
         return CGPoint(x: 0, y: centerY)
     }()
     
-    private lazy var blendLayer: CALayer = {
-        let layer = CALayer()
-        layer.backgroundColor = UIColor.white.cgColor
-        layer.compositingFilter = "differenceBlendMode"
-        return layer
-    }()
-    
-    private lazy var blendLayer2: CALayer = {
-        let layer = CALayer()
-        layer.backgroundColor = UIColor.white.cgColor
-        layer.compositingFilter = "differenceBlendMode"
-        return layer
-    }()
-    
+    private var firstBlendLayer: CALayer?
+    private var secondBlendLayer: CALayer?
     private var currentBudgets: [Budget]?
     weak var delegate: BudgetSliderDelegate?
     
     func configure() {
-        layer.addSublayer(blendLayer)
-        layer.addSublayer(blendLayer2)
+        configureBlendLayers()
         addSubview(budgetSlider)
         NSLayoutConstraint.activate([
             budgetSlider.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
@@ -74,8 +50,25 @@ final class BudgetGraphView: UIView {
         ])
     }
     
-    func drawGraph(with budgets: [Budget]) {
+    private func configureBlendLayers() {
+        firstBlendLayer = createBlendLayer()
+        secondBlendLayer = createBlendLayer()
         
+        guard let firstBlendLayer = firstBlendLayer,
+              let secondBlendLayer = secondBlendLayer else { return }
+        
+        layer.addSublayer(firstBlendLayer)
+        layer.addSublayer(secondBlendLayer)
+    }
+    
+    private func createBlendLayer() -> CALayer {
+        let layer = CALayer()
+        layer.backgroundColor = UIColor.white.cgColor
+        layer.compositingFilter = "differenceBlendMode"
+        return layer
+    }
+    
+    func drawGraph(with budgets: [Budget]) {
         let budgets = addDummy(to: budgets, count: 10)
         
         guard let maxCount = budgets.max()?.count else { return }
@@ -132,17 +125,20 @@ final class BudgetGraphView: UIView {
     }
     
     func fillOffsets(values: [Int]) {
-        guard let totalCount = currentBudgets?.count else { return }
+        guard let totalCount = currentBudgets?.count,
+              let firstBlendLayer = firstBlendLayer,
+              let secondBlendLayer = secondBlendLayer else { return }
+        
         let unit = frame.width / CGFloat(totalCount)
         
         let firstWidth = CGFloat(values[0]) * unit
         let firstFrame = CGRect(x: 0, y: 0, width: firstWidth, height: frame.height / 2)
-        blendLayer.frame = firstFrame
+        firstBlendLayer.frame = firstFrame
         
         let secondWidth = CGFloat(totalCount - values[1]) * unit
         let secondX = CGFloat(values[1]) * unit
         let secondFrame = CGRect(x: secondX, y: 0, width: secondWidth, height: frame.height / 2)
-        blendLayer2.frame = secondFrame
+        secondBlendLayer.frame = secondFrame
     }
     
     @objc private func sliderDragEnded(_ sender: MultiSlider) {
