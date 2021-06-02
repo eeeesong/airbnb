@@ -293,9 +293,8 @@
 			isa = PBXGroup;
 			children = (
 				E4DB1CF826524A7700894DCB /* Main.storyboard */,
-				E4F302F62656B3AB002C9770 /* UseCase */,
-				E4F303002656B9C3002C9770 /* ViewModel */,
-				E4F302F52656B39D002C9770 /* ViewController */,
+				E4E63CBD26676A6400F86104 /* Home */,
+				E4E63CBE26676A7200F86104 /* AccommodationList */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -435,6 +434,47 @@
 				E4E63CAC2667220400F86104 /* Budget.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		E4E63CBD26676A6400F86104 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				E4F302F62656B3AB002C9770 /* UseCase */,
+				E4F303002656B9C3002C9770 /* ViewModel */,
+				E4F302F52656B39D002C9770 /* ViewController */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		E4E63CBE26676A7200F86104 /* AccommodationList */ = {
+			isa = PBXGroup;
+			children = (
+				E4E63CBF26676A8D00F86104 /* ViewController */,
+				E4E63CC026676A9300F86104 /* ViewModel */,
+				E4E63CC126676A9700F86104 /* View */,
+			);
+			path = AccommodationList;
+			sourceTree = "<group>";
+		};
+		E4E63CBF26676A8D00F86104 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		E4E63CC026676A9300F86104 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		E4E63CC126676A9700F86104 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		E4F302AE26560107002C9770 /* View */ = {
