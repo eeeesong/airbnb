@@ -8,7 +8,16 @@
 import Foundation
 
 class Charge {
-    var minimum: Double?
-    var maximum: Double?
+    var minimum: Int?
+    var maximum: Int?
 }
-//ConditionManager의 형태를 잡기 위해 임시적으로 구현한 타입입니다
+
+extension Charge: CustomStringConvertible {
+    var description: String {
+        if let minimum = minimum, let maximum = maximum {
+            return "₩\(minimum) ~ ₩\(maximum)"
+        } else {
+            return ""
+        }
+    }
+}

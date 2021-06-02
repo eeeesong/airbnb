@@ -13,7 +13,7 @@ final class BudgetViewController: AccommodationConditionViewController {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16, weight: .medium)
         label.textColor = .darkGray
-        label.text = "₩10,000 ~ ₩100,000,000"
+        label.text = "₩10,000 ~ ₩1,010,000"
         return label
     }()
     
@@ -21,7 +21,7 @@ final class BudgetViewController: AccommodationConditionViewController {
         let label = UILabel()
         label.font = .systemFont(ofSize: 11, weight: .medium)
         label.textColor = .gray
-        label.text = "평균 1박 요금은 777,777원입니다."
+        label.text = "평균 1박 요금은 70,000원입니다."
         return label
     }()
     
@@ -49,11 +49,11 @@ final class BudgetViewController: AccommodationConditionViewController {
     }()
 
     var accommodationConditionTableViewDataSource: AccommodationConditionTableViewDataSource?
-    private var conditionManager: ConditionManager?
+    private var viewModel: (AnySearchConditionHandleModel<[Budget]> & BudgetManageModel)?
     
-    static func create(conditionManager: ConditionManager) -> BudgetViewController {
+    static func create(viewModel: AnySearchConditionHandleModel<[Budget]> & BudgetManageModel) -> BudgetViewController {
         let budgetViewController = BudgetViewController()
-        budgetViewController.conditionManager = conditionManager
+        budgetViewController.viewModel = viewModel
         return budgetViewController
     }
     
@@ -87,29 +87,43 @@ final class BudgetViewController: AccommodationConditionViewController {
         super.viewDidLoad()
         accommodationConditionTableView.dataSource = accommodationConditionTableViewDataSource
         budgetGraphView.delegate = self
+        bind()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        drawGraph()
         budgetGraphView.configure()
     }
     
-    private func drawGraph() {
-        var randomNumbers = [Int]()
-        (0...100).forEach { index in
-            randomNumbers.append(Int.random(in: 0...300))
+    private func bind() {
+        viewModel?.bind(dataHandler: { [weak self] budgets in
+            self?.drawGraph(with: budgets)
+        }, conditionHandler: { [weak self] conditions in
+            self?.accommodationConditionTableViewDataSource?.updateContents(with: conditions)
+            self?.updateConditionView()
+
+            if conditions[2] != "" {
+                self?.setCancelBarButton()
+            }
+        })
+    }
+    
+    private func drawGraph(with budgets: [Budget]) {
+        DispatchQueue.main.async {
+            self.budgetGraphView.drawGraph(with: budgets)
         }
-        var mockBudget = [Budget]()
-        randomNumbers.enumerated().forEach { (index, number) in
-            mockBudget.append(Budget(count: number,
-                                     price: (index+1) * 10000))
+    }
+    
+    private func updateConditionView() {
+        DispatchQueue.main.async {
+            self.accommodationConditionTableView.reloadData()
         }
-        budgetGraphView.drawGraph(with: mockBudget)
     }
     
     @objc override func selectionCanceled(_ sender: UIBarButtonItem) {
-        
+        super.selectionCanceled(sender)
+        budgetGraphView.resetThumbs()
+        viewModel?.didSelectionCanceled()
     }
     
     @objc override func pushNextViewController(_ sender: UIBarButtonItem) {
@@ -121,5 +135,6 @@ final class BudgetViewController: AccommodationConditionViewController {
 extension BudgetViewController: BudgetSliderDelegate {
     func didDragEnded(with values: [Int]) {
         budgetGraphView.fillOffsets(values: values)
+        viewModel?.didNewBudgetSelected(values: values)
     }
 }

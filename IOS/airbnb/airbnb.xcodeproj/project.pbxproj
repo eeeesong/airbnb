@@ -56,6 +56,9 @@
 		E4E63CA72666198600F86104 /* BudgetGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E63CA62666198600F86104 /* BudgetGraphView.swift */; };
 		E4E63CAA266656AE00F86104 /* MultiSlider in Frameworks */ = {isa = PBXBuildFile; productRef = E4E63CA9266656AE00F86104 /* MultiSlider */; };
 		E4E63CAD2667220400F86104 /* Budget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E63CAC2667220400F86104 /* Budget.swift */; };
+		E4E63CB12667260A00F86104 /* BudgetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E63CB02667260A00F86104 /* BudgetViewModel.swift */; };
+		E4E63CB32667509300F86104 /* BudgetManageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E63CB22667509300F86104 /* BudgetManageModel.swift */; };
+		E4E63CB52667557D00F86104 /* BudgetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E63CB42667557D00F86104 /* BudgetManager.swift */; };
 		E4F302A32655F71E002C9770 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E4F302A22655F71E002C9770 /* Alamofire */; };
 		E4F302A52655F837002C9770 /* AlamofireRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F302A42655F837002C9770 /* AlamofireRequestManager.swift */; };
 		E4F302A72655F84B002C9770 /* AlamofireNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F302A62655F84B002C9770 /* AlamofireNetworkManager.swift */; };
@@ -143,6 +146,9 @@
 		E4E63CA3266611CF00F86104 /* AccommodationConditionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccommodationConditionViewController.swift; sourceTree = "<group>"; };
 		E4E63CA62666198600F86104 /* BudgetGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetGraphView.swift; sourceTree = "<group>"; };
 		E4E63CAC2667220400F86104 /* Budget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Budget.swift; sourceTree = "<group>"; };
+		E4E63CB02667260A00F86104 /* BudgetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetViewModel.swift; sourceTree = "<group>"; };
+		E4E63CB22667509300F86104 /* BudgetManageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetManageModel.swift; sourceTree = "<group>"; };
+		E4E63CB42667557D00F86104 /* BudgetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetManager.swift; sourceTree = "<group>"; };
 		E4F302A42655F837002C9770 /* AlamofireRequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireRequestManager.swift; sourceTree = "<group>"; };
 		E4F302A62655F84B002C9770 /* AlamofireNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireNetworkManager.swift; sourceTree = "<group>"; };
 		E4F302A82655F890002C9770 /* AlamofireImageLoadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireImageLoadManager.swift; sourceTree = "<group>"; };
@@ -408,6 +414,8 @@
 		E4E63C982664D38400F86104 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				E4E63CB22667509300F86104 /* BudgetManageModel.swift */,
+				E4E63CB02667260A00F86104 /* BudgetViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -423,6 +431,7 @@
 		E4E63CAB266721F800F86104 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				E4E63CB42667557D00F86104 /* BudgetManager.swift */,
 				E4E63CAC2667220400F86104 /* Budget.swift */,
 			);
 			path = Model;
@@ -645,6 +654,7 @@
 				E4E63C68265F314600F86104 /* AccommodationConditionTableViewDataSource.swift in Sources */,
 				E4DB1D7E2653916900894DCB /* PopularLocationTableViewCell.swift in Sources */,
 				E4E63C7A265FBC0100F86104 /* Period.swift in Sources */,
+				E4E63CB32667509300F86104 /* BudgetManageModel.swift in Sources */,
 				E4E63C64265F300400F86104 /* CalendarViewModel.swift in Sources */,
 				E4DB1D7C2653912F00894DCB /* PopularLocationViewController.swift in Sources */,
 				E4E63C8A266366A200F86104 /* SearchConditionHandleModel.swift in Sources */,
@@ -667,6 +677,7 @@
 				E4F302B5265604D6002C9770 /* PopularLocationTableViewDataSource.swift in Sources */,
 				E4F302D1265652D9002C9770 /* StoryboardFactory.swift in Sources */,
 				E4DB1CF326524A7700894DCB /* AppDelegate.swift in Sources */,
+				E4E63CB52667557D00F86104 /* BudgetManager.swift in Sources */,
 				E4DB1CF526524A7700894DCB /* SceneDelegate.swift in Sources */,
 				E4F302B3265602ED002C9770 /* PopularLocationViewModel.swift in Sources */,
 				E4E63C6A265F315800F86104 /* CalendarCollectionViewDataSource.swift in Sources */,
@@ -689,6 +700,7 @@
 				E4F302BD26560E2D002C9770 /* PopularLocationUseCase.swift in Sources */,
 				E4E63C6E265F34E700F86104 /* Day.swift in Sources */,
 				E4E63C70265F785000F86104 /* CalendarManageModel.swift in Sources */,
+				E4E63CB12667260A00F86104 /* BudgetViewModel.swift in Sources */,
 				E4F302AB2655F970002C9770 /* AlamofireRequestManagable.swift in Sources */,
 				E481481026549C980069BE20 /* SearchResultTableViewCell.swift in Sources */,
 				E4F303042656B9DB002C9770 /* HomeViewModel.swift in Sources */,

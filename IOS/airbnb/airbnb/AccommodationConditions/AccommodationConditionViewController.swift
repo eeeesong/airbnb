@@ -99,7 +99,7 @@ class AccommodationConditionViewController: UIViewController {
                                                target: self,
                                                action: #selector(selectionCanceled))
         navigationItem.setRightBarButton(cancelButtonItem, animated: false)
-        changeBarButtonStatus(isCalendarSelected: true)
+        changeBarButtonStatus(isConditionSelected: true)
     }
     
     @objc func selectionCanceled(_ sender: UIBarButtonItem) {
@@ -108,10 +108,10 @@ class AccommodationConditionViewController: UIViewController {
     
     private func unsetCancelBarButton() {
         navigationItem.setRightBarButton(nil, animated: false)
-        changeBarButtonStatus(isCalendarSelected: false)
+        changeBarButtonStatus(isConditionSelected: false)
     }
     
-    private func changeBarButtonStatus(isCalendarSelected selectionStatus: Bool) {
+    private func changeBarButtonStatus(isConditionSelected selectionStatus: Bool) {
         nextButton.isEnabled = selectionStatus
         passButton.isEnabled = !selectionStatus
     }

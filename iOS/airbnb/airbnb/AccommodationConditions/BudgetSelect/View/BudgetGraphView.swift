@@ -22,7 +22,7 @@ final class BudgetGraphView: UIView {
         let slider = MultiSlider(frame: frame)
         
         slider.orientation = .horizontal
-        slider.isContinuous = false
+        slider.isContinuous = true
         slider.tintColor = .white
         slider.showsThumbImageShadow = true
         slider.keepsDistanceBetweenThumbs = true
@@ -38,6 +38,8 @@ final class BudgetGraphView: UIView {
     private var firstBlendLayer: CALayer?
     private var secondBlendLayer: CALayer?
     private var currentBudgets: [Budget]?
+    private let dummyCount = 10
+    private var maximumValue: CGFloat?
     weak var delegate: BudgetSliderDelegate?
     
     func configure() {
@@ -69,7 +71,7 @@ final class BudgetGraphView: UIView {
     }
     
     func drawGraph(with budgets: [Budget]) {
-        let budgets = addDummy(to: budgets, count: 10)
+        let budgets = addDummy(to: budgets, count: dummyCount)
         
         guard let maxCount = budgets.max()?.count else { return }
         
@@ -122,6 +124,7 @@ final class BudgetGraphView: UIView {
         budgetSlider.maximumValue = CGFloat(count)
         budgetSlider.value = [0, CGFloat(count)]
         budgetSlider.snapStepSize = 1
+        self.maximumValue = CGFloat(count)
     }
     
     func fillOffsets(values: [Int]) {
@@ -129,20 +132,27 @@ final class BudgetGraphView: UIView {
               let firstBlendLayer = firstBlendLayer,
               let secondBlendLayer = secondBlendLayer else { return }
         
+        let movedValues = values.map{ $0 + dummyCount }
         let unit = frame.width / CGFloat(totalCount)
         
-        let firstWidth = CGFloat(values[0]) * unit
+        let firstWidth = CGFloat(movedValues[0]) * unit
         let firstFrame = CGRect(x: 0, y: 0, width: firstWidth, height: frame.height / 2)
         firstBlendLayer.frame = firstFrame
         
-        let secondWidth = CGFloat(totalCount - values[1]) * unit
-        let secondX = CGFloat(values[1]) * unit
+        let secondWidth = CGFloat(totalCount - movedValues[1]) * unit
+        let secondX = CGFloat(movedValues[1]) * unit
         let secondFrame = CGRect(x: secondX, y: 0, width: secondWidth, height: frame.height / 2)
         secondBlendLayer.frame = secondFrame
     }
     
+    func resetThumbs() {
+        let max = self.maximumValue ?? 0
+        budgetSlider.value = [0, max]
+        fillOffsets(values: budgetSlider.value.map{ Int($0) })
+    }
+    
     @objc private func sliderDragEnded(_ sender: MultiSlider) {
-        let newValues = sender.value.map{ Int($0) }
+        let newValues = sender.value.map{ Int($0) - dummyCount }
         delegate?.didDragEnded(with: newValues)
     }
     

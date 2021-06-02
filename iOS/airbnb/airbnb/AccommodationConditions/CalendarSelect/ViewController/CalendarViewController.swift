@@ -129,7 +129,8 @@ final class CalendarViewController: AccommodationConditionViewController {
         super.pushNextViewController(sender)
         let tempLocation = Location(name: "임시", coordinate: Coordinate(latitude: 0, longitude: 0))
         let tempConditionManager = ConditionManager(location: tempLocation)
-        let budgetViewController = BudgetViewController.create(conditionManager: tempConditionManager)
+        let viewModel = BudgetViewModel(conditionManager: tempConditionManager)
+        let budgetViewController = BudgetViewController.create(viewModel: viewModel)
         budgetViewController.accommodationConditionTableViewDataSource = accommodationConditionTableViewDataSource
         self.navigationController?.pushViewController(budgetViewController, animated: true)
     }

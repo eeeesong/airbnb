@@ -23,7 +23,7 @@ class ConditionManager {
     func gettableInfos() -> [String] {
         let locationInfo = location.name
         let periodInfo = period.description
-        let chargeInfo = ""
+        let chargeInfo = charge.description
         let headcountInfo = ""
         return [locationInfo, periodInfo, chargeInfo, headcountInfo]
     }
@@ -40,5 +40,10 @@ class ConditionManager {
         if orderedDates.count == 2 {
             period.checkOut = orderedDates[1]
         }
+    }
+    
+    func updateCharge(with budgets: [Int?]) {
+        charge.minimum = budgets[0]
+        charge.maximum = budgets[1]
     }
 }
