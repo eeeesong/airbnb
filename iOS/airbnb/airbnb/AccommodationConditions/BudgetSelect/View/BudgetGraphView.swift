@@ -37,7 +37,6 @@ final class BudgetGraphView: UIView {
         slider.tintColor = .white
         slider.showsThumbImageShadow = true
         slider.keepsDistanceBetweenThumbs = true
-        slider.addTarget(self, action: #selector(sliderDragEnded), for: .touchDragEnter)
         slider.addTarget(self, action: #selector(sliderDragEnded), for: .valueChanged)
         return slider
     }()
@@ -64,20 +63,6 @@ final class BudgetGraphView: UIView {
     private var currentBudgets: [Budget]?
     weak var delegate: BudgetSliderDelegate?
     
-    func fillOffsets(values: [Int]) {
-        guard let totalCount = currentBudgets?.count else { return }
-        let unit = frame.width / CGFloat(totalCount)
-        
-        let firstWidth = CGFloat(values[0]-1) * unit
-        let firstFrame = CGRect(x: 0, y: 0, width: firstWidth, height: frame.height / 2)
-        blendLayer.frame = firstFrame
-        
-        let secondWidth = CGFloat(totalCount - values[1]) * unit
-        let secondX = CGFloat(values[1]) * unit
-        let secondFrame = CGRect(x: secondX, y: 0, width: secondWidth, height: frame.height / 2)
-        blendLayer2.frame = secondFrame
-    }
-    
     func configure() {
         layer.addSublayer(blendLayer)
         layer.addSublayer(blendLayer2)
@@ -89,21 +74,10 @@ final class BudgetGraphView: UIView {
         ])
     }
     
-    private func counter(sliderValue: CGFloat) -> Int? {
-        guard let budgets = currentBudgets,
-              let min = budgets.first?.price,
-              let max = budgets.last?.price else { return nil }
-        let unit = CGFloat(max - min) / CGFloat(budgets.count)
-        return Int(sliderValue / unit)
-    }
-    
-    @objc private func sliderDragEnded(_ sender: MultiSlider) {
-        let newValues = sender.value.map{ counter(sliderValue: $0) }.compactMap{ $0 }
-        delegate?.didDragEnded(with: newValues)
-    }
-    
     func drawGraph(with budgets: [Budget]) {
-    
+        
+        let budgets = addDummy(to: budgets, count: 10)
+        
         guard let maxCount = budgets.max()?.count else { return }
         
         currentBudgets = budgets
@@ -134,13 +108,13 @@ final class BudgetGraphView: UIView {
         changeBudgetSlider(with: budgets)
     }
     
-    func changeBudgetSlider(with budgets: [Budget]) {
-        guard let min = budgets.first?.price, let max = budgets.last?.price else { return }
-        let count = budgets.count
-        budgetSlider.minimumValue = CGFloat(min)
-        budgetSlider.maximumValue = CGFloat(max)
-        budgetSlider.value = [CGFloat(min), CGFloat(max)]
-        budgetSlider.snapStepSize = CGFloat(max - min) / CGFloat(count)
+    private func addDummy(to budgets: [Budget], count: Int) -> [Budget] {
+        var budgets = budgets
+        let dummy = Budget(count: 0, price: 0)
+        let dummies = Array(repeating: dummy, count: count)
+        budgets.append(contentsOf: dummies)
+        budgets.insert(contentsOf: dummies, at: 0)
+        return budgets
     }
     
     private func yCoordinate(for scale: CGFloat) -> CGFloat {
@@ -148,5 +122,32 @@ final class BudgetGraphView: UIView {
         let point = centerY * scale
         return centerY - point
     }
-
+    
+    func changeBudgetSlider(with budgets: [Budget]) {
+        let count = budgets.count
+        budgetSlider.minimumValue = 0
+        budgetSlider.maximumValue = CGFloat(count)
+        budgetSlider.value = [0, CGFloat(count)]
+        budgetSlider.snapStepSize = 1
+    }
+    
+    func fillOffsets(values: [Int]) {
+        guard let totalCount = currentBudgets?.count else { return }
+        let unit = frame.width / CGFloat(totalCount)
+        
+        let firstWidth = CGFloat(values[0]) * unit
+        let firstFrame = CGRect(x: 0, y: 0, width: firstWidth, height: frame.height / 2)
+        blendLayer.frame = firstFrame
+        
+        let secondWidth = CGFloat(totalCount - values[1]) * unit
+        let secondX = CGFloat(values[1]) * unit
+        let secondFrame = CGRect(x: secondX, y: 0, width: secondWidth, height: frame.height / 2)
+        blendLayer2.frame = secondFrame
+    }
+    
+    @objc private func sliderDragEnded(_ sender: MultiSlider) {
+        let newValues = sender.value.map{ Int($0) }
+        delegate?.didDragEnded(with: newValues)
+    }
+    
 }
