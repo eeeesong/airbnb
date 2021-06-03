@@ -140,13 +140,7 @@ extension AccommodationListViewController: UICollectionViewDelegateFlowLayout {
 //뷰모델로 옮겨야 함!
 extension AccommodationListViewController {
     private func requestCards() {
-        guard let query = conditionManager?.query() else { return }
-        
-        let parameters: [String: Any] = ["checkinDate": query.checkinDate,
-                                         "checkoutDate": query.checkoutDate,
-                                         "startPrice": query.startPrice,
-                                         "endPrice": query.endPrice,
-                                         "numberOfPeople": query.numberOfPeople]
+        guard let parameters = conditionManager?.query() else { return }
         
         networkManager.get(decodingType: [AccommodationDTO].self,
                            endPoint: "/accommodations",
@@ -160,7 +154,7 @@ extension AccommodationListViewController {
                                                  reviewRating: dto.reviewRating,
                                                  reviewCounts: dto.reviewCounts,
                                                  name: dto.name,
-                                                 price: dto.accommodationOption.pricePerNight)
+                                                 price: dto.pricePerNight)
                     accomodationCards.append(card)
                 }
                 self?.updateDataSource(with: accomodationCards)

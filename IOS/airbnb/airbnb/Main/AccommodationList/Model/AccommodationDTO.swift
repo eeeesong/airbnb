@@ -12,6 +12,7 @@ struct AccommodationDTO: Decodable {
     let name: String
     let accommodationOption: AccommodationOption
     let totalPrice: Int?
+    let pricePerNight: Int
     let reviewRating: Double
     let reviewCounts: Int
     let mainImage: String
@@ -19,7 +20,6 @@ struct AccommodationDTO: Decodable {
 
 struct AccommodationOption: Decodable {
     let capacity: Int
-    let pricePerNight: Int
     let accommodationType: String
     let bedroomCount: Int
     let restroomCount: Int
@@ -35,7 +35,9 @@ struct AccommodationQuery: Decodable {
     let checkoutDate: String
     let startPrice: Int
     let endPrice: Int
-    let numberOfPeople: Int
+    let numberOfAdults: Int
+    let numberOfChildren: Int
+    let numberOfBabies: Int
     
     init(checkinDate: Date, checkoutDate: Date?, startPrice: Int, endPrice: Int) {
         self.checkinDate = DateFormatter.dateToString(format: DateFormat.yearMonthDay, date: checkinDate)
@@ -46,6 +48,18 @@ struct AccommodationQuery: Decodable {
         }
         self.startPrice = startPrice
         self.endPrice = endPrice
-        self.numberOfPeople = 1
+        self.numberOfAdults = 1
+        self.numberOfChildren = 0
+        self.numberOfBabies = 0
+    }
+    
+    func asDictionary() -> [String: Any] {
+        return  ["checkinDate": checkinDate,
+                 "checkoutDate": checkoutDate,
+                 "startPrice": startPrice,
+                 "endPrice": endPrice,
+                 "numberOfAdults": numberOfAdults,
+                 "numberOfChildren": numberOfChildren,
+                 "numberOfBabies": numberOfBabies]
     }
 }

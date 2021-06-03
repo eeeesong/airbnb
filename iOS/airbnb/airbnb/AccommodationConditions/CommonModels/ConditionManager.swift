@@ -28,14 +28,15 @@ class ConditionManager {
         return [locationInfo, periodInfo, chargeInfo, headcountInfo]
     }
     
-    func query() -> AccommodationQuery? {
+    func query() -> [String: Any]? {
         guard let checkinDate = period.checkIn,
               let startPrice = charge.minimum,
               let endPrice = charge.maximum else { return nil }
-        return AccommodationQuery(checkinDate: checkinDate,
+        let query = AccommodationQuery(checkinDate: checkinDate,
                                   checkoutDate: period.checkOut,
                                   startPrice: startPrice,
                                   endPrice: endPrice)
+        return query.asDictionary()
     }
     
     func updatePeriod(with dates: [Date?]) {
