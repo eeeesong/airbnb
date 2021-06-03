@@ -36,15 +36,20 @@ final class FakeNetworkManager: NetworkManagable {
 struct FakeData {
     static let FakeHeroImagePath = ImagePath.cover
     static let FakePopularLocations = [
+        PopularLocation(name: "코드스쿼드", distanceFromHere: "걸어서 6시간", imagePath: ImagePath.codesquad),
+        PopularLocation(name: "하와이", distanceFromHere: "걸어서 2만 시간", imagePath: ImagePath.hawaii),
         PopularLocation(name: "달", distanceFromHere: "우주선으로 100시간", imagePath: ImagePath.moon),
         PopularLocation(name: "안드로메다", distanceFromHere: "우주선으로 1천 시간", imagePath: ImagePath.andro),
-        PopularLocation(name: "하와이", distanceFromHere: "걸어서 2만 시간", imagePath: ImagePath.hawaii),
-        PopularLocation(name: "코드스쿼드", distanceFromHere: "걸어서 6시간", imagePath: ImagePath.codesquad)
+        PopularLocation(name: "KWANGYA", distanceFromHere: "차로 3시간", imagePath: ImagePath.kwangya)
         ]
     static let FakeSearchResults = [
+        Location(name: "코드스쿼드", coordinate: Coordinate(latitude: 1, longitude: 1)),
+        Location(name: "제주도", coordinate: Coordinate(latitude: 1, longitude: 1)),
+        Location(name: "라스베가스", coordinate: Coordinate(latitude: 1, longitude: 1)),
         Location(name: "지구", coordinate: Coordinate(latitude: 1, longitude: 1)),
         Location(name: "은하계", coordinate: Coordinate(latitude: 1, longitude: 1)),
-        Location(name: "방구석", coordinate: Coordinate(latitude: 1, longitude: 1))]
+        Location(name: "방구석", coordinate: Coordinate(latitude: 1, longitude: 1)),
+        Location(name: "하와이", coordinate: Coordinate(latitude: 1, longitude: 1))]
 }
 
 enum ImagePath {
@@ -53,4 +58,5 @@ enum ImagePath {
     static let andro = "https://user-images.githubusercontent.com/72188416/118993847-d1d21e80-b9c0-11eb-9bf4-01a91eb04ab7.jpg"
     static let hawaii = "https://user-images.githubusercontent.com/72188416/118993832-ced72e00-b9c0-11eb-9adc-e16fba4d5be0.png"
     static let codesquad = "https://user-images.githubusercontent.com/72188416/119002071-8111f400-b9c7-11eb-885f-90f0d67037a9.png"
+    static let kwangya = "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F2441224C58059A6F06"
 }
