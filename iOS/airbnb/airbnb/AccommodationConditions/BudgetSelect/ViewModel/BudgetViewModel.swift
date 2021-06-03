@@ -23,6 +23,10 @@ final class BudgetViewModel: AnySearchConditionHandleModel<[Budget]> {
         }
     }
     
+    enum ButtonTitle {
+        static let back = "가격 선택"
+    }
+    
     private let conditionManager: ConditionManager
     private var budgetManager: BudgetManager?
     

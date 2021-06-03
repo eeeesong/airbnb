@@ -69,6 +69,7 @@ class AccommodationConditionViewController: UIViewController {
         addTableView()
         view.backgroundColor = .white
         edgesForExtendedLayout = .all
+        title = "숙소 찾기"
     }
 
     private func addToolBar() {

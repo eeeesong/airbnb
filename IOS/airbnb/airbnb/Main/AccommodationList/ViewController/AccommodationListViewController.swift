@@ -56,6 +56,7 @@ final class AccommodationListViewController: UIViewController {
         super.loadView()
         view.backgroundColor = .white
         edgesForExtendedLayout = .all
+        title = "숙소 찾기"
         addStackView()
         addCollectionView()
     }

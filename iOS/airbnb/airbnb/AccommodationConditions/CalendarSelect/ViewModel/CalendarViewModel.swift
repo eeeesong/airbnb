@@ -27,7 +27,7 @@ final class CalendarViewModel: AnySearchConditionHandleModel<[Month]> {
     private let conditionManager: ConditionManager
     
     enum ButtonTitle {
-        static let backButton = "날짜 선택"
+        static let back = "날짜 선택"
         static let pass = "건너뛰기"
         static let next = "다음"
         static let cancel = "지우기"

@@ -129,6 +129,7 @@ final class BudgetViewController: AccommodationConditionViewController {
         let tempLocation = Location(name: "임시", coordinate: Coordinate(latitude: 0, longitude: 0))
         let tempConditionManager = ConditionManager(location: tempLocation)
         let accommodationViewController = AccommodationListViewController.create(conditionManager: tempConditionManager)
+        self.navigationItem.backButtonTitle = BudgetViewModel.ButtonTitle.back
         self.navigationController?.pushViewController(accommodationViewController, animated: true)
     }
 

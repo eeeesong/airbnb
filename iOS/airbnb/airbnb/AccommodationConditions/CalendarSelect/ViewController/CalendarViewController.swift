@@ -132,6 +132,7 @@ final class CalendarViewController: AccommodationConditionViewController {
         let viewModel = BudgetViewModel(conditionManager: tempConditionManager)
         let budgetViewController = BudgetViewController.create(viewModel: viewModel)
         budgetViewController.accommodationConditionTableViewDataSource = accommodationConditionTableViewDataSource
+        self.navigationItem.backButtonTitle = CalendarViewModel.ButtonTitle.back
         self.navigationController?.pushViewController(budgetViewController, animated: true)
     }
     
