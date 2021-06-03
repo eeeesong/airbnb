@@ -101,7 +101,7 @@ final class BudgetGraphView: UIView {
         
         let layer = CAShapeLayer()
         layer.path = path.cgPath
-        layer.fillColor = UIColor.darkGray.cgColor
+        layer.fillColor = UIColor(named: "Graph")?.cgColor
         
         self.layer.insertSublayer(layer, at: 0)
         changeBudgetSlider(with: budgets)

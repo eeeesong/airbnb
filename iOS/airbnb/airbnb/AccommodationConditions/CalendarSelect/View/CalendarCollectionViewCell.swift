@@ -64,7 +64,7 @@ final class CalendarCollectionViewCell: UICollectionViewCell {
             titleLabel.textColor = .white
             layer.cornerRadius = frame.width * 0.5
         } else {
-            backgroundColor = .lightGray
+            backgroundColor = UIColor(named: "CalendarSelection")
             titleLabel.textColor = .black
             layer.cornerRadius = 0
         }
