@@ -16,14 +16,22 @@ final class AccommodationListViewController: UIViewController {
     private lazy var conditionStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.distribution = .equalSpacing
+        stackView.distribution = .equalCentering
         stackView.translatesAutoresizingMaskIntoConstraints = false
         [locationLabel, periodLabel, headcountLabel].forEach { label in
-            label.font = .systemFont(ofSize: 15, weight: .light)
+            label.font = .systemFont(ofSize: 16, weight: .light)
             label.textColor = .darkGray
             stackView.addArrangedSubview(label)
         }
         return stackView
+    }()
+    
+    private lazy var countLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .systemFont(ofSize: 22, weight: .semibold)
+        label.text = "0개의 숙소"
+        return label
     }()
     
     private lazy var accommodationCollectionView: UICollectionView = {
@@ -58,6 +66,7 @@ final class AccommodationListViewController: UIViewController {
         edgesForExtendedLayout = .all
         title = "숙소 찾기"
         addStackView()
+        addLabel()
         addCollectionView()
     }
     
@@ -71,12 +80,21 @@ final class AccommodationListViewController: UIViewController {
         ])
     }
     
+    private func addLabel() {
+        view.addSubview(countLabel)
+        NSLayoutConstraint.activate([
+            countLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: viewInset),
+            countLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -viewInset),
+            countLabel.topAnchor.constraint(equalTo: conditionStackView.bottomAnchor)
+        ])
+    }
+    
     private func addCollectionView() {
         view.addSubview(accommodationCollectionView)
         NSLayoutConstraint.activate([
             accommodationCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: viewInset),
             accommodationCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -viewInset),
-            accommodationCollectionView.topAnchor.constraint(equalTo: conditionStackView.bottomAnchor),
+            accommodationCollectionView.topAnchor.constraint(equalTo: countLabel.bottomAnchor, constant: viewInset),
             accommodationCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
@@ -114,7 +132,7 @@ extension AccommodationListViewController: UICollectionViewDelegateFlowLayout {
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         let cellWidth = collectionView.bounds.width
-        let cellHeight = cellWidth * 1.15
+        let cellHeight = cellWidth * 1.08
         return CGSize(width: cellWidth, height: cellHeight)
     }
 }
@@ -146,6 +164,7 @@ extension AccommodationListViewController {
                     accomodationCards.append(card)
                 }
                 self?.updateDataSource(with: accomodationCards)
+                self?.countLabel.text = "\(accomodationCards.count)개의 숙소"
                 
                 let cacheManager = AlamofireImageLoadManager()
                 
@@ -163,6 +182,5 @@ extension AccommodationListViewController {
                 print(error)
             }
         }
-        
     }
 }
