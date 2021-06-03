@@ -28,7 +28,7 @@ final class HeroImageUseCase: ImageLoadUseCase {
     }
     
     func execute(completionHandler: @escaping (Result<String, NetworkError>) -> Void) {
-        networkManager.get(decodingType: String.self, endPoint: EndPoint.heroImage) { dataResponse in
+        networkManager.get(decodingType: String.self, endPoint: EndPoint.heroImage, parameter: nil) { dataResponse in
             do {
                 let imageUrl = try dataResponse.get()
                 self.imageLoadManager.load(from: imageUrl) { cacheUrl in

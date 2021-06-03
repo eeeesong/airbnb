@@ -129,31 +129,15 @@ final class AccommodationCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-    func updateCell() {
+    func updateCell(with card: AccommodationCard) {
+        averageRatingLabel.text = "\(card.reviewRating)"
+        reviewCountLabel.text = "(후기 \(card.reviewCounts)개)"
+        titleLabel.text = card.name
+        priceLabel.text = "₩\(card.price)"
         
+        if let imagePath = card.mainImagePath {
+            thumbImageView.image = UIImage(contentsOfFile: imagePath)
+        }
     }
     
 }
-
-/*
- {
-     "id": 3,
-     "name": "프레디 여관",
-     "accommodationOption": {
-       "capacity": 2,
-       "pricePerNight": 40000,
-       "accommodationType": "ONEROOM",
-       "bedroomCount": 1,
-       "restroomCount": 1,
-       "restroomType": "PUBLIC",
-       "hasKitchen": false,
-       "hasInternet": false,
-       "hasAirconditioner": true,
-       "hasHairdrier": true
-     },
-     "totalPrice": null,
-     "reviewRating": 3.1,
-     "reviewCounts": 5,
-     "mainImage": "https://image.zdnet.co.kr/2016/12/08/imc_47ix3fAqITYz5QtR.jpg"
-   }
- */

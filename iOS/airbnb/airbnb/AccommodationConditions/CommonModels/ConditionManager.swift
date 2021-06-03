@@ -28,6 +28,16 @@ class ConditionManager {
         return [locationInfo, periodInfo, chargeInfo, headcountInfo]
     }
     
+    func query() -> AccommodationQuery? {
+        guard let checkinDate = period.checkIn,
+              let startPrice = charge.minimum,
+              let endPrice = charge.maximum else { return nil }
+        return AccommodationQuery(checkinDate: checkinDate,
+                                  checkoutDate: period.checkOut,
+                                  startPrice: startPrice,
+                                  endPrice: endPrice)
+    }
+    
     func updatePeriod(with dates: [Date?]) {
         let orderedDates = dates.compactMap{ $0 }.sorted()
         

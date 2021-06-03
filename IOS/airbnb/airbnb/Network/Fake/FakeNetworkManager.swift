@@ -16,7 +16,9 @@ final class FakeNetworkManager: NetworkManagable {
         self.fakeData = fakeData
     }
     
-    func get<T: Decodable>(decodingType: T.Type, endPoint: String,
+    func get<T: Decodable>(decodingType: T.Type,
+                           endPoint: String,
+                           parameter: [String: Any]?,
                 completionHandler: @escaping (Result<T, NetworkError>) -> Void) {
         let fakeResponse = HTTPURLResponse(url: URL(string: "fake.com")!, statusCode: 200, httpVersion: nil, headerFields: nil)
         let fakeDataResponse = DataResponse<T, NetworkError>(request: nil,

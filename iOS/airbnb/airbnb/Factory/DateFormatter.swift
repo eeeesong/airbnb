@@ -11,6 +11,7 @@ enum DateFormat {
     static let monthYear = "M월 YYYY"
     static let monthDay = "M월 d일"
     static let day = "d"
+    static let yearMonthDay = "YYYY-MM-dd"
 }
 
 extension DateFormatter {

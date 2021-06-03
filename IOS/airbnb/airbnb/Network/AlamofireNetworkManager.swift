@@ -16,9 +16,11 @@ final class AlamofireNetworkManager: NetworkManagable {
         self.requestManager = AlamofireRequestManager(baseAddress: baseAddress)
     }
 
-    func get<T: Decodable>(decodingType: T.Type, endPoint: String,
+    func get<T: Decodable>(decodingType: T.Type,
+                           endPoint: String,
+                           parameter: [String: Any]?,
                            completionHandler: @escaping (Result<T, NetworkError>) -> Void) {
-        let request = requestManager.request(for: .get, endPoint: endPoint, parameters: nil)
+        let request = requestManager.request(for: .get, endPoint: endPoint, parameters: parameter)
         request.responseDecodable(of: decodingType) { dataResponse in
             guard let statusCode = dataResponse.response?.statusCode else {
                 return completionHandler(.failure(NetworkError.internet))

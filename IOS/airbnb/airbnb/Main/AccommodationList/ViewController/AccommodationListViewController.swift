@@ -16,7 +16,7 @@ final class AccommodationListViewController: UIViewController {
     private lazy var conditionStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.distribution = .fillProportionally
+        stackView.distribution = .equalSpacing
         stackView.translatesAutoresizingMaskIntoConstraints = false
         [locationLabel, periodLabel, headcountLabel].forEach { label in
             label.font = .systemFont(ofSize: 15, weight: .light)
@@ -34,12 +34,13 @@ final class AccommodationListViewController: UIViewController {
         collectionView.register(AccommodationCollectionViewCell.self, forCellWithReuseIdentifier: cellId)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .white
+        collectionView.showsVerticalScrollIndicator = false
         return collectionView
     }()
     
     private lazy var viewInset: CGFloat = {
         let viewWidth = view.frame.width
-        return viewWidth * 0.08
+        return viewWidth * 0.04
     }()
     
     private var conditionManager: ConditionManager?
@@ -66,7 +67,7 @@ final class AccommodationListViewController: UIViewController {
             conditionStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: viewInset),
             conditionStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -viewInset),
             conditionStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            conditionStackView.heightAnchor.constraint(equalToConstant: viewInset * 2)
+            conditionStackView.heightAnchor.constraint(equalToConstant: viewInset * 3)
         ])
     }
     
@@ -86,6 +87,7 @@ final class AccommodationListViewController: UIViewController {
         accommodationCollectionViewDataSource = AccommodationCollectionViewDataSource()
         accommodationCollectionView.dataSource = accommodationCollectionViewDataSource
         accommodationCollectionView.delegate = self
+        requestCards()
     }
     
     private func updateLabels() {
@@ -96,6 +98,15 @@ final class AccommodationListViewController: UIViewController {
         }
     }
     
+    private func updateDataSource(with cards: [AccommodationCard]) {
+        accommodationCollectionViewDataSource?.updateInfos(with: cards)
+        DispatchQueue.main.async {
+            self.accommodationCollectionView.reloadData()
+        }
+    }
+    
+    private var networkManager = AlamofireNetworkManager(with: "http://airbnb-team4-mockup.herokuapp.com")
+    
 }
 
 extension AccommodationListViewController: UICollectionViewDelegateFlowLayout {
@@ -105,5 +116,53 @@ extension AccommodationListViewController: UICollectionViewDelegateFlowLayout {
         let cellWidth = collectionView.bounds.width
         let cellHeight = cellWidth * 1.15
         return CGSize(width: cellWidth, height: cellHeight)
+    }
+}
+
+//뷰모델로 옮겨야 함!
+extension AccommodationListViewController {
+    private func requestCards() {
+        guard let query = conditionManager?.query() else { return }
+        
+        let parameters: [String: Any] = ["checkinDate": query.checkinDate,
+                                         "checkoutDate": query.checkoutDate,
+                                         "startPrice": query.startPrice,
+                                         "endPrice": query.endPrice,
+                                         "numberOfPeople": query.numberOfPeople]
+        
+        networkManager.get(decodingType: [AccommodationDTO].self,
+                           endPoint: "/accommodations",
+                           parameter: parameters) { [weak self] result in
+            switch result {
+            case .success(let data):
+                var accomodationCards = [AccommodationCard]()
+                data.forEach { dto in
+                    let card = AccommodationCard(mainImage: dto.mainImage,
+                                                 mainImagePath: nil,
+                                                 reviewRating: dto.reviewRating,
+                                                 reviewCounts: dto.reviewCounts,
+                                                 name: dto.name,
+                                                 price: dto.accommodationOption.pricePerNight)
+                    accomodationCards.append(card)
+                }
+                self?.updateDataSource(with: accomodationCards)
+                
+                let cacheManager = AlamofireImageLoadManager()
+                
+                accomodationCards.enumerated().forEach { (index, card) in
+                    let url = card.mainImage
+                    cacheManager.load(from: url) { [weak self] cachePath in
+                        self?.accommodationCollectionViewDataSource?.updateCachePath(with: cachePath, for: index)
+                        DispatchQueue.main.async {
+                            self?.accommodationCollectionView.reloadData()
+                        }
+                    }
+                }
+                
+            case .failure(let error):
+                print(error)
+            }
+        }
+        
     }
 }

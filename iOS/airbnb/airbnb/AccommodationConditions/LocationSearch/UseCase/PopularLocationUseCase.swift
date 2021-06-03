@@ -29,7 +29,7 @@ final class PopularLocationUseCase: PopularLocationLoadUseCase {
     
     func execute(completionHandler: @escaping (Result<[PopularLocation], NetworkError>) -> Void) {
         let endPoint = EndPoint.popularLocations
-        networkManager.get(decodingType: [PopularLocation].self, endPoint: endPoint) { dataResponse in
+        networkManager.get(decodingType: [PopularLocation].self, endPoint: endPoint, parameter: nil) { dataResponse in
             completionHandler(dataResponse)
         }
     }
