@@ -33,6 +33,8 @@ final class BudgetGraphView: UIView {
 
     private lazy var firstBlendLayer: CALayer = {
         let layer = CALayer()
+        let tightRightFrame = CGRect(x: -10, y: 0, width: 10, height: frame.height)
+        layer.frame = tightRightFrame
         layer.backgroundColor = UIColor.white.cgColor
         layer.compositingFilter = "differenceBlendMode"
         return layer
@@ -40,6 +42,8 @@ final class BudgetGraphView: UIView {
     
     private lazy var secondBlendLayer: CALayer = {
         let layer = CALayer()
+        let tightLeftFrame = CGRect(x: frame.width, y: 0, width: 10, height: frame.height)
+        layer.frame = tightLeftFrame
         layer.backgroundColor = UIColor.white.cgColor
         layer.compositingFilter = "differenceBlendMode"
         return layer
@@ -58,13 +62,6 @@ final class BudgetGraphView: UIView {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         configure()
-    }
-
-    private func createBlendLayer() -> CALayer {
-        let layer = CALayer()
-        layer.backgroundColor = UIColor.white.cgColor
-        layer.compositingFilter = "differenceBlendMode"
-        return layer
     }
     
     func configure() {

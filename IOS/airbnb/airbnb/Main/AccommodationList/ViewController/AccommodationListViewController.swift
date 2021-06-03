@@ -11,7 +11,6 @@ final class AccommodationListViewController: UIViewController {
 
     private lazy var locationLabel = UILabel()
     private lazy var periodLabel = UILabel()
-    private lazy var budgetLabel = UILabel()
     private lazy var headcountLabel = UILabel()
     
     private lazy var conditionStackView: UIStackView = {
@@ -19,7 +18,7 @@ final class AccommodationListViewController: UIViewController {
         stackView.axis = .horizontal
         stackView.distribution = .fillProportionally
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        [locationLabel, periodLabel, budgetLabel, headcountLabel].forEach { label in
+        [locationLabel, periodLabel, headcountLabel].forEach { label in
             label.font = .systemFont(ofSize: 15, weight: .light)
             label.textColor = .darkGray
             stackView.addArrangedSubview(label)
@@ -93,7 +92,6 @@ final class AccommodationListViewController: UIViewController {
         if let info = conditionManager?.gettableInfos() {
             locationLabel.text = info[0]
             periodLabel.text = info[1]
-            budgetLabel.text = info[2]
             headcountLabel.text = info[3]
         }
     }
