@@ -14,6 +14,8 @@ final class HomeDIContainer {
     enum Controller {
         static let rootNavigation = "RootNavigationController"
         static let tabBar = "HomeTabBarController"
+        static let wishList = "WishListViewController"
+        static let logIn = "LogInViewController"
     }
 
     func makeHomeNavigationController() -> UINavigationController {
@@ -25,7 +27,7 @@ final class HomeDIContainer {
     func makeHomeTabBarController() -> UITabBarController {
         let id = Controller.tabBar
         let homeTabBarController = storyboard.instantiateViewController(withIdentifier: id) as? UITabBarController ?? UITabBarController()
-        let viewControllers = [makeHomeViewController()]
+        let viewControllers = [makeHomeViewController(), makeWishListViewController(), makeLogInViewController()]
         homeTabBarController.setViewControllers(viewControllers, animated: true)
         return homeTabBarController
     }
@@ -36,6 +38,18 @@ final class HomeDIContainer {
     
     private func makeHomeViewModel() -> HomeViewModel {
         return HomeViewModel()
+    }
+    
+    private func makeWishListViewController() -> UIViewController {
+        let id = Controller.wishList
+        let wishListController = storyboard.instantiateViewController(withIdentifier: id)
+        return wishListController
+    }
+    
+    private func makeLogInViewController() -> UIViewController {
+        let id = Controller.logIn
+        let logInController = storyboard.instantiateViewController(withIdentifier: id)
+        return logInController
     }
     
 }
