@@ -27,12 +27,7 @@ final class BudgetViewModel: AnySearchConditionHandleModel<[Budget]> {
         static let back = "가격 선택"
     }
     
-    private let conditionManager: ConditionManager
     private var budgetManager: BudgetManager?
-    
-    init(conditionManager: ConditionManager) {
-        self.conditionManager = conditionManager
-    }
     
     override func bind(dataHandler: @escaping DataHandler, conditionHandler: @escaping ConditionHandler) {
         super.bind(dataHandler: dataHandler, conditionHandler: conditionHandler)

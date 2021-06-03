@@ -13,6 +13,11 @@ class AnySearchConditionHandleModel<DataToPresent>: SearchConditionHandleModel {
     
     private(set) var dataHandler: DataHandler?
     private(set) var conditionHandler: ConditionHandler?
+    var conditionManager: ConditionManager
+    
+    init(conditionManager: ConditionManager) {
+        self.conditionManager = conditionManager
+    }
 
     func bind(dataHandler: @escaping DataHandler, conditionHandler: @escaping ConditionHandler) {
         self.dataHandler = dataHandler

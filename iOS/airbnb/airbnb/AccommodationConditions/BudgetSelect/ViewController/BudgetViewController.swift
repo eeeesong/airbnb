@@ -126,9 +126,8 @@ final class BudgetViewController: AccommodationConditionViewController {
     
     @objc override func pushNextViewController(_ sender: UIBarButtonItem) {
         super.pushNextViewController(sender)
-        let tempLocation = Location(name: "임시", coordinate: Coordinate(latitude: 0, longitude: 0))
-        let tempConditionManager = ConditionManager(location: tempLocation)
-        let accommodationViewController = AccommodationListViewController.create(conditionManager: tempConditionManager)
+        let conditionManager = viewModel!.conditionManager
+        let accommodationViewController = AccommodationListViewController.create(conditionManager: conditionManager)
         self.navigationItem.backButtonTitle = BudgetViewModel.ButtonTitle.back
         self.navigationController?.pushViewController(accommodationViewController, animated: true)
     }
