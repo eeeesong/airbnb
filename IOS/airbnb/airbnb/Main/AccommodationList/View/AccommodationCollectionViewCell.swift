@@ -14,7 +14,8 @@ final class AccommodationCollectionViewCell: UICollectionViewCell {
         let imageHeight = imageWidth * 0.75
         let imageFrame = CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight)
         let imageView = UIImageView(frame: imageFrame)
-        imageView.backgroundColor = .systemPink
+        imageView.image = UIImage(named: "placeholder")
+        imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = imageWidth * 0.03
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -46,6 +47,11 @@ final class AccommodationCollectionViewCell: UICollectionViewCell {
         stackView.spacing = spacing * 0.5
         let star = UIImage(systemName: "star.fill")
         let starImageView = UIImageView(image: star)
+        starImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            starImageView.widthAnchor.constraint(equalToConstant: 14),
+            starImageView.heightAnchor.constraint(equalToConstant: 14)
+        ])
         starImageView.tintColor = .red
         [starImageView, averageRatingLabel, reviewCountLabel].forEach { view in
             stackView.addArrangedSubview(view)
@@ -107,7 +113,7 @@ final class AccommodationCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             ratingStackView.topAnchor.constraint(equalTo: thumbImageView.bottomAnchor, constant: spacing),
             ratingStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-            ratingStackView.widthAnchor.constraint(greaterThanOrEqualTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.3),
+            ratingStackView.widthAnchor.constraint(greaterThanOrEqualTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.35),
             ratingStackView.heightAnchor.constraint(equalToConstant: spacing * 1.5)
         ])
     }
@@ -133,7 +139,7 @@ final class AccommodationCollectionViewCell: UICollectionViewCell {
         averageRatingLabel.text = "\(card.reviewRating)"
         reviewCountLabel.text = "(후기 \(card.reviewCounts)개)"
         titleLabel.text = card.name
-        priceLabel.text = "₩\(card.price)"
+        priceLabel.text = "₩ \(card.price)"
         
         if let imagePath = card.mainImagePath {
             thumbImageView.image = UIImage(contentsOfFile: imagePath)

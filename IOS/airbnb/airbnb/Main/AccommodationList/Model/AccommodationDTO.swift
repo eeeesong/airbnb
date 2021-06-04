@@ -15,7 +15,7 @@ struct AccommodationDTO: Decodable {
     let pricePerNight: Int
     let reviewRating: Double
     let reviewCounts: Int
-    let mainImage: String
+    let mainImage: String?
 }
 
 struct AccommodationOption: Decodable {

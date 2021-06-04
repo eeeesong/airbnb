@@ -8,7 +8,7 @@
 import Foundation
 
 struct AccommodationCard {
-    let mainImage: String
+    let mainImage: String?
     var mainImagePath: String?
     let reviewRating: Double
     let reviewCounts: Int

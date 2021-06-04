@@ -19,7 +19,7 @@ final class AccommodationListViewController: UIViewController {
         stackView.distribution = .equalCentering
         stackView.translatesAutoresizingMaskIntoConstraints = false
         [locationLabel, periodLabel, headcountLabel].forEach { label in
-            label.font = .systemFont(ofSize: 16, weight: .light)
+            label.font = .systemFont(ofSize: 15, weight: .light)
             label.textColor = .darkGray
             stackView.addArrangedSubview(label)
         }
@@ -157,17 +157,19 @@ extension AccommodationListViewController {
                                                  price: dto.pricePerNight)
                     accomodationCards.append(card)
                 }
+                
                 self?.updateDataSource(with: accomodationCards)
                 self?.countLabel.text = "\(accomodationCards.count)개의 숙소"
                 
                 let cacheManager = AlamofireImageLoadManager()
                 
                 accomodationCards.enumerated().forEach { (index, card) in
-                    let url = card.mainImage
+                    if let url = card.mainImage {
                     cacheManager.load(from: url) { [weak self] cachePath in
                         self?.accommodationCollectionViewDataSource?.updateCachePath(with: cachePath, for: index)
-                        DispatchQueue.main.async {
-                            self?.accommodationCollectionView.reloadData()
+                            DispatchQueue.main.async {
+                                self?.accommodationCollectionView.reloadData()
+                            }
                         }
                     }
                 }
