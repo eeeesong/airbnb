@@ -123,7 +123,7 @@ final class AccommodationListViewController: UIViewController {
         }
     }
     
-    private var networkManager = AlamofireNetworkManager(with: "http://airbnb-team4-mockup.herokuapp.com")
+    private var networkManager = AlamofireNetworkManager(with: MockAPI.baseUrl)
     
 }
 
@@ -143,7 +143,7 @@ extension AccommodationListViewController {
         guard let parameters = conditionManager?.query() else { return }
         
         networkManager.get(decodingType: [AccommodationDTO].self,
-                           endPoint: "/accommodations",
+                           endPoint: MockAPI.EndPoint.accommodations,
                            parameter: parameters) { [weak self] result in
             switch result {
             case .success(let data):
@@ -158,24 +158,35 @@ extension AccommodationListViewController {
                     accomodationCards.append(card)
                 }
                 
+                accomodationCards = self?.priceFiltered(accommodations: accomodationCards,
+                                                        startAt: parameters[QueryKeys.minimumPrice] as? Int,
+                                                        endAt: parameters[QueryKeys.maximumPrice] as? Int) ?? []
                 self?.updateDataSource(with: accomodationCards)
                 self?.countLabel.text = "\(accomodationCards.count)개의 숙소"
-                
-                let cacheManager = AlamofireImageLoadManager()
-                
-                accomodationCards.enumerated().forEach { (index, card) in
-                    if let url = card.mainImage {
-                    cacheManager.load(from: url) { [weak self] cachePath in
-                        self?.accommodationCollectionViewDataSource?.updateCachePath(with: cachePath, for: index)
-                            DispatchQueue.main.async {
-                                self?.accommodationCollectionView.reloadData()
-                            }
-                        }
+                self?.getImage(from: accomodationCards)
+            case .failure(let error):
+                let alert = AlertFactory.create(error: error)
+                self?.present(alert, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    private func priceFiltered(accommodations: [AccommodationCard], startAt: Int?, endAt: Int?) -> [AccommodationCard] {
+        guard let startAt = startAt, let endAt = endAt else { return accommodations }
+        return accommodations.filter{ $0.price >= startAt && $0.price <= endAt }
+    }
+    
+    private func getImage(from accommodations: [AccommodationCard]) {
+        let cacheManager = AlamofireImageLoadManager()
+        
+        accommodations.enumerated().forEach { (index, card) in
+            if let url = card.mainImage {
+            cacheManager.load(from: url) { [weak self] cachePath in
+                self?.accommodationCollectionViewDataSource?.updateCachePath(with: cachePath, for: index)
+                    DispatchQueue.main.async {
+                        self?.accommodationCollectionView.reloadData()
                     }
                 }
-                
-            case .failure(let error):
-                print(error)
             }
         }
     }

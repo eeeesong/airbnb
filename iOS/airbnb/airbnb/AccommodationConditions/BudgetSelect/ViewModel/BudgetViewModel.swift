@@ -34,11 +34,11 @@ final class BudgetViewModel: AnySearchConditionHandleModel<[Budget]> {
         getPriceData()
     }
     
-    private let networkManager = AlamofireNetworkManager(with: "http://airbnb-team4-mockup.herokuapp.com")
+    private let networkManager = AlamofireNetworkManager(with: MockAPI.baseUrl)
     
     private func getPriceData() {
         networkManager.get(decodingType: [Budget].self,
-                           endPoint: "/accommodationPriceStats", parameter: nil) { [weak self] result in
+                           endPoint: MockAPI.EndPoint.priceChart, parameter: nil) { [weak self] result in
             switch result {
             case .success(let budgets):
                 self?.createBudgetManager(with: budgets)
