@@ -14,9 +14,7 @@ final class AccommodationCollectionViewCell: UICollectionViewCell {
         let imageHeight = imageWidth * 0.75
         let imageFrame = CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight)
         let imageView = UIImageView(frame: imageFrame)
-        imageView.image = UIImage(named: "placeholder")
         imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = imageWidth * 0.03
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -26,7 +24,6 @@ final class AccommodationCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = .darkGray
         label.font = .systemFont(ofSize: 14, weight: .medium)
-        label.text = "5.0"
         return label
     }()
     
@@ -34,8 +31,20 @@ final class AccommodationCollectionViewCell: UICollectionViewCell {
        let label = UILabel()
         label.textColor = .lightGray
         label.font = .systemFont(ofSize: 14, weight: .medium)
-        label.text = "(후기 199개)"
         return label
+    }()
+    
+    private lazy var starImageView: UIImageView = {
+        let star = UIImage(systemName: "star.fill")
+        let starImageView = UIImageView(image: star)
+        starImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            starImageView.widthAnchor.constraint(equalToConstant: 14),
+            starImageView.heightAnchor.constraint(equalToConstant: 14)
+        ])
+        starImageView.tintColor = .red
+        starImageView.isHidden = true
+        return starImageView
     }()
     
     private lazy var ratingStackView: UIStackView = {
@@ -45,14 +54,6 @@ final class AccommodationCollectionViewCell: UICollectionViewCell {
         stackView.distribution = .fillProportionally
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = spacing * 0.5
-        let star = UIImage(systemName: "star.fill")
-        let starImageView = UIImageView(image: star)
-        starImageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            starImageView.widthAnchor.constraint(equalToConstant: 14),
-            starImageView.heightAnchor.constraint(equalToConstant: 14)
-        ])
-        starImageView.tintColor = .red
         [starImageView, averageRatingLabel, reviewCountLabel].forEach { view in
             stackView.addArrangedSubview(view)
         }
@@ -63,7 +64,7 @@ final class AccommodationCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 20, weight: .regular)
-        label.text = "Very Amazing Cool Hotel You Must Not Miss"
+        label.text = "           "
         return label
     }()
     
@@ -71,7 +72,7 @@ final class AccommodationCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 16, weight: .medium)
-        label.text = "₩800,000"
+        label.text = "           "
         return label
     }()
     
@@ -96,6 +97,7 @@ final class AccommodationCollectionViewCell: UICollectionViewCell {
         addRatingStackView()
         addTitleLabel()
         addPriceLabel()
+        shimmerOn()
     }
     
     private func addImageView() {
@@ -131,11 +133,13 @@ final class AccommodationCollectionViewCell: UICollectionViewCell {
         addSubview(priceLabel)
         NSLayoutConstraint.activate([
             priceLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: spacing),
-            priceLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor)
+            priceLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            priceLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
         ])
     }
     
     func updateCell(with card: AccommodationCard) {
+        shimmerOff()
         averageRatingLabel.text = "\(card.reviewRating)"
         reviewCountLabel.text = "(후기 \(card.reviewCounts)개)"
         titleLabel.text = card.name
@@ -143,6 +147,39 @@ final class AccommodationCollectionViewCell: UICollectionViewCell {
         
         if let imagePath = card.mainImagePath {
             thumbImageView.image = UIImage(contentsOfFile: imagePath)
+        } else {
+            thumbImageView.image = UIImage(named: "placeholder")
+        }
+    }
+    
+    private var gradientLayers = [CALayer]()
+    
+    private func shimmerOn() {
+        let animation = ShimmerFactory.shimmerAnimation()
+        let shimmerColor = UIColor(named: "Shimmer")
+        let viewsToShimmer = [thumbImageView, ratingStackView, titleLabel, priceLabel]
+        
+        viewsToShimmer.forEach { view in
+            view.backgroundColor = shimmerColor
+            let gradient = ShimmerFactory.gradientLayer(frame: view.frame)
+            gradientLayers.append(gradient)
+            gradient.add(animation, forKey: animation.keyPath)
+            view.layer.addSublayer(gradient)
+        }
+    }
+    
+    private func shimmerOff() {
+        starImageView.isHidden = false
+        thumbImageView.layer.cornerRadius = thumbImageView.frame.width * 0.03
+        
+        let viewsToUnshimmer = [thumbImageView, ratingStackView, titleLabel, priceLabel]
+        
+        viewsToUnshimmer.forEach { view in
+            view.backgroundColor = .white
+        }
+        
+        gradientLayers.forEach { layer in
+            layer.removeFromSuperlayer()
         }
     }
     

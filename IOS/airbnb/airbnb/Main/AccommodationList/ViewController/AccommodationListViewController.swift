@@ -30,7 +30,7 @@ final class AccommodationListViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 22, weight: .semibold)
-        label.text = "0개의 숙소"
+        label.text = "숙소 정보를 불러오고 있습니다..."
         return label
     }()
     

@@ -20,12 +20,13 @@ final class AccommodationCollectionViewDataSource: NSObject, UICollectionViewDat
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return accommodations.count
+        return accommodations.count > 0 ? accommodations.count : 2
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cellId = AccommodationCollectionViewCell.reuseIdentifier
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as? AccommodationCollectionViewCell ?? AccommodationCollectionViewCell()
+        guard !accommodations.isEmpty else { return cell }
         let cellInfo = accommodations[indexPath.row]
         cell.updateCell(with: cellInfo)
         return cell
