@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Budget {
+struct Budget: Decodable {
     let count: Int
     let price: Int
 }

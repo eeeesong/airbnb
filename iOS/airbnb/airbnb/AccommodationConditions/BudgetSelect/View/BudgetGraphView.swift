@@ -23,7 +23,7 @@ final class BudgetGraphView: UIView {
         
         slider.orientation = .horizontal
         slider.isContinuous = true
-        slider.tintColor = .white
+        slider.tintColor = UIColor(named: "Graph")
         slider.showsThumbImageShadow = true
         slider.keepsDistanceBetweenThumbs = true
         slider.translatesAutoresizingMaskIntoConstraints = false

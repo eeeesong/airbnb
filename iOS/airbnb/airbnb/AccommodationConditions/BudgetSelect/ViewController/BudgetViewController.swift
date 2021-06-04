@@ -13,7 +13,7 @@ final class BudgetViewController: AccommodationConditionViewController {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16, weight: .medium)
         label.textColor = .darkGray
-        label.text = "₩10,000 ~ ₩1,010,000"
+        label.text = "₩10,000 ~ ₩1,000,000"
         return label
     }()
     
@@ -21,7 +21,7 @@ final class BudgetViewController: AccommodationConditionViewController {
         let label = UILabel()
         label.font = .systemFont(ofSize: 11, weight: .medium)
         label.textColor = .gray
-        label.text = "평균 1박 요금은 70,000원입니다."
+        label.text = "평균 1박 요금은 310,000원입니다."
         return label
     }()
     
