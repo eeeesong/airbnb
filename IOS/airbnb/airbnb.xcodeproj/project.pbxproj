@@ -242,6 +242,7 @@
 				E4DB1D7826538AFE00894DCB /* LocationSearch */,
 				E48148112654E63F0069BE20 /* CalendarSelect */,
 				E4E63C942664CE1B00F86104 /* BudgetSelect */,
+				E4E63CBE26676A7200F86104 /* AccommodationList */,
 			);
 			path = AccommodationConditions;
 			sourceTree = "<group>";
@@ -311,7 +312,6 @@
 			children = (
 				E4DB1CF826524A7700894DCB /* Main.storyboard */,
 				E4E63CBD26676A6400F86104 /* Home */,
-				E4E63CBE26676A7200F86104 /* AccommodationList */,
 			);
 			path = Main;
 			sourceTree = "<group>";
