@@ -1,22 +1,135 @@
 # airbnb✈️
 
-숙박 예약 앱 `airbnb` 클론 프로젝트
+숙박 예약 앱 **airbnb** 클론 프로젝트
 
-> [코드스쿼드](https://github.com/codesquad-members-2021/airbnb) 프로젝트
-> 
-> 2021년 5월 17일 ~ 6월 4일 진행 
+> [코드스쿼드](https://github.com/codesquad-members-2021/airbnb) 마스터즈 코스에서 진행한 프로젝트입니다.
+
+- `개발 기간` 2021년 5월 17일 ~ 6월 4일
+- `팀` iOS 1인 (with 백엔드 1인, 웹프론트엔드 1인)
+- `주요 개발 키워드` MVVM, Custom Calendar & Graph (Code-based), Network Test
+
+#### iPhone11 구동 화면
+
+<img src="https://user-images.githubusercontent.com/72188416/120914487-78b0fd00-c6d9-11eb-8dd6-a1353c8698ab.gif" alt="앱의 전반적인 흐름" width=280>
 
 <br>
 
+## 상세 개발 내용
 
-## iPhone11 구동 화면
+### MVVM 
+- ViewModel을 통한 데이터 바인딩
+```swift
+// PopularLocationViewController
+private func bind() {
+    viewModel?.bind { [weak self] popularLocation in
+        self?.updateTableView(with: popularLocation)
+    } errorHandler: { [weak self] error in
+        self?.alertError(error: error)
+    }
+}
+```
 
-<img src="https://user-images.githubusercontent.com/72188416/120914487-78b0fd00-c6d9-11eb-8dd6-a1353c8698ab.gif" alt="앱의 전반적인 흐름" width=320>
 
-<br>
+- Protocol과 Generic을 활용한 ViewModel 중복 코드 제거
+
+```swift
+protocol NetworkResultHandleModel {
+    associatedtype Result
+    typealias DataHandler = (Result) -> Void
+    typealias ErrorHandler = (Error) -> Void
+    func bind(dataHandler: @escaping DataHandler, errorHandler: @escaping ErrorHandler)
+}
+
+class AnyResultHandleModel<ResultData>: NetworkResultHandleModel {
+    
+    typealias Result = ResultData
+    
+    private(set) var dataHandler: DataHandler?
+    private(set) var errorHandler: ErrorHandler?
+    
+    func bind(dataHandler: @escaping DataHandler, errorHandler: @escaping ErrorHandler) {
+        self.dataHandler = dataHandler
+        self.errorHandler = errorHandler
+    }
+}
+```
 
 
-## 주요 구현 내용
+
+
+### Custom Calendar
+#### 흐름
+
+<img width="900" alt="스크린샷 2021-09-15 오후 7 41 57" src="https://user-images.githubusercontent.com/72188416/133419333-c5cf8caa-6702-4f77-8c79-57bad4dfe407.png">
+
+- IndexPath의 대소 비교 시, Section이 다를 경우에 제대로된 비교가 어려웠습니다.
+- 이러한 어려움을 해결하고자 CalendarCoordinate 타입을 새로 생성하고, Comparable 프로토콜을 채택하여 비교식을 작성했습니다.
+
+```swift
+struct CalendarCoordinate {
+    let month: Int
+    let day: Int
+
+    init(with indexPath: IndexPath) {
+        self.month = indexPath.section
+        self.day = indexPath.row
+    }
+    
+    enum MonthRelationship {
+        case same
+        case continuous
+        case away
+    }
+    
+    static func relationship(between first: CalendarCoordinate,_ second: CalendarCoordinate) -> MonthRelationship {
+        let monthDiff = abs(first.month - second.month)
+        switch monthDiff {
+        case 0:
+            return .same
+        case 1:
+            return .continuous
+        default:
+            return .away
+        }
+    }
+}
+
+extension CalendarCoordinate: Comparable {
+    static func < (lhs: CalendarCoordinate, rhs: CalendarCoordinate) -> Bool {
+        let sameMonth = lhs.month == rhs.month && lhs.day < rhs.day
+        let differentMonth = lhs.month < rhs.month
+        return sameMonth || differentMonth
+    }
+}
+```
+
+- 그리고 날짜가 이틀 이상 선택된 경우의 상태 업데이트 시, 이를 적극 활용하였습니다.
+
+```swift
+// CalendarManager
+func changeMultipleDays(fromCoord: CalendarCoordinate, toCoord: CalendarCoordinate, to status: SelectStatus) {
+    let relationship = CalendarCoordinate.relationship(between: fromCoord, toCoord)
+    switch relationship {
+    case .same:
+        changeMonth(at: fromCoord.month, fromIndex: fromCoord.day, toIndex: toCoord.day, to: status)
+    case .away:
+        (fromCoord.month + 1..<toCoord.month).forEach { monthIndex in
+            changeMonth(at: monthIndex, to: status)
+        }
+        fallthrough
+    case .continuous:
+        changeMonth(at: fromCoord.month, fromIndex: fromCoord.day, to: status)
+        changeMonth(at: toCoord.month, toIndex: toCoord.day, to: status)
+    }
+}
+```
+
+
+
+
+
+## 화면 별 구현 내용
+
 
 <img src="https://user-images.githubusercontent.com/72188416/120915142-0e01c080-c6dd-11eb-8909-2df26004aaa0.png" alt="search" width=240>
 
@@ -37,6 +150,7 @@
 
   - `UICollectionView`를 활용한 Custom Calendar UI 구현
   - Foundation의 [Calendar](https://developer.apple.com/documentation/foundation/calendar)를 활용하여 Custom Calendar Model 구현
+  - 현재와 다른 연도의 날짜 선택 시 연도 표시, 같은 연도일 경우 일/월만 표시
 
   
 <br>
@@ -61,51 +175,8 @@
 - **숙박 리스트 화면**
   - 날짜, 가격 선택에 따라 숙박 리스트 query
   - API 미구현에 따라 앱 내 가격 filter 후 데이터 노출
-
-
-<br>
-
-
-## 디테일 
-
-### 사용자 편의 증대
-
-
-
-<img src="https://user-images.githubusercontent.com/72188416/120915134-06421c00-c6dd-11eb-9ccc-095e46ad7029.png" alt="2022" width=240>
-
-
-
-- **캘린더**
-  - 현재와 다른 연도의 날짜 선택 시 연도 표시
-  - 같은 연도일 경우 일/월만 표시하도록 구현
-
-<br>
-
-
-<img src="https://user-images.githubusercontent.com/72188416/120915140-0d692a00-c6dd-11eb-9e10-8c0f204646dc.png" alt="shimmer" width=240>
-
-- **숙소 리스트 화면**
   - 네트워크 데이터 표시 전 스켈레톤 UI 표시
   - `CAGradientLayer`와 `CAAnimation`을 활용하여 Shimmer 생성, 적용
 
-<br>
-
-
-### 에러 대응
-
-<img src="https://user-images.githubusercontent.com/72188416/120915137-0b9f6680-c6dd-11eb-8c02-d726e618095b.png" alt="error" width=240>
-
-
-
-- 네트워크 통신 상황에 따른 에러 표시 구현
 
 <br>
-
-
-<img src="https://user-images.githubusercontent.com/72188416/120915136-08a47600-c6dd-11eb-8e49-a7412225f18b.png" alt="placeholder" width=240>
-
-
-
-- 불러올 수 없는 이미지가 있을 시 placeholder 이미지 표시
-
