@@ -5,7 +5,7 @@
 > [코드스쿼드](https://github.com/codesquad-members-2021/airbnb) 마스터즈 코스에서 진행한 프로젝트입니다.
 
 - `개발 기간` 2021년 5월 17일 ~ 6월 4일
-- `팀` iOS 1인 (with 백엔드 1인, 웹프론트엔드 1인)
+- `팀` iOS 1인 (with 백엔드 1인, 웹프론트엔드 1인) / + 코드 리뷰어 1인
 - `주요 개발 키워드` MVVM, Custom Calendar & Graph (Code-based), Network Test
 
 #### iPhone11 구동 화면
@@ -17,7 +17,8 @@
 ## 상세 개발 내용
 
 ### MVVM 
-- ViewModel을 통한 데이터 바인딩
+- ViewModel을 통한 데이터 바인딩을 통해 ViewController의 역할을 축소하고, 데이터 흐름을 가시화했습니다.
+
 ```swift
 // PopularLocationViewController
 private func bind() {
@@ -29,8 +30,8 @@ private func bind() {
 }
 ```
 
-
-- Protocol과 Generic을 활용한 ViewModel 중복 코드 제거
+- [코드 리뷰](https://github.com/codesquad-members-2021/airbnb/pull/7) 진행 후, 중복된 ViewModel 코드가 가독성을 해친다는 것을 알게되었습니다.
+- Protocol과 Generic을 활용해 ViewModel의 중복코드를 개선하였습니다.
 
 ```swift
 protocol NetworkResultHandleModel {
